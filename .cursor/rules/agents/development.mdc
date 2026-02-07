@@ -11,3 +11,5 @@ alwaysApply: false
 - **状态管理**：统一使用 Pinia，状态与业务逻辑封装在 `stores/` 中，按模块拆分。
 - **路由**：使用懒加载（`() => import('@/views/xxx')`），路由配置放在 `router/` 下模块化管理（如 `router/modules/`）。详见 @agents/router.mdc。
 - **组件**：保持单一职责，避免单文件过大；可复用逻辑抽成 composables。
+  - **页面拆分**：页面较复杂时，将可独立部分拆成小组件，放入该页面目录下的 `components/`（如 `src/views/xxx/components/`）。
+  - **统一导出**：页面私有组件由 `components/index.ts` 统一导出，页面通过 `import { A, B } from './components'` 引用（参考 `views/dashboard`）。
