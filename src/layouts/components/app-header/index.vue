@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { Fold, Expand } from "@element-plus/icons-vue";
-import { useAuthStore } from "@/stores/auth";
 import { useLayoutStore } from "@/stores/layout";
-import { useThemeStore } from "@/stores/theme";
+import HeaderUserMenu from "@/layouts/components/header-user-menu/index.vue";
 
 const route = useRoute();
-const router = useRouter();
-const auth = useAuthStore();
 const layoutStore = useLayoutStore();
-const themeStore = useThemeStore();
 
 const breadcrumbItems = computed(() => {
   const withTitle = route.matched.filter((r) => r.meta?.title);
@@ -31,11 +27,6 @@ const breadcrumbItems = computed(() => {
     };
   });
 });
-
-function logout() {
-  auth.logout();
-  router.push("/login");
-}
 </script>
 
 <template>
@@ -66,13 +57,7 @@ function logout() {
       </ElBreadcrumb>
     </div>
     <div class="app-header-right">
-      <ElSwitch
-        v-model="themeStore.isDark"
-        inline-prompt
-        active-text="深"
-        inactive-text="浅"
-      />
-      <ElButton type="primary" link @click="logout">退出</ElButton>
+      <HeaderUserMenu />
     </div>
   </ElHeader>
 </template>
@@ -95,11 +80,6 @@ function logout() {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-.app-header-theme-label {
-  font-size: 12px;
-  color: var(--el-text-color-regular);
 }
 .app-header-collapse-btn {
   margin-right: 8px;
