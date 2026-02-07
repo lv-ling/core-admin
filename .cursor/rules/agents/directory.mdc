@@ -1,0 +1,47 @@
+---
+description: 目录规范；src 结构、各目录用途与约定。
+alwaysApply: false
+---
+
+# 目录规范
+
+## 目录树
+
+```
+src/
+├── assets/           # 静态资源（图片、字体、图标等）
+├── components/       # 通用组件（跨页面复用）
+├── layouts/          # 页面布局（如 MainLayout、AppLayout）
+├── views/            # 页面（与路由一一对应）
+│   └── [模块]/       # 按业务模块分子目录（如 member-list、finance）
+│       ├── index.vue # 页面入口
+│       ├── components/ # 该页面私有组件
+│       │   └── [组件名]/ # 组件目录 kebab-case，入口统一为 index.vue
+│       │       └── index.vue
+│       └── ...
+├── stores/           # Pinia 状态（按模块拆分，如 auth.ts）
+├── api/              # API 接口（或 services/，按模块如 member.ts）
+├── utils/            # 工具函数
+├── types/            # 类型定义
+├── styles/           # 全局样式、主题变量
+└── router/           # 路由
+    ├── index.ts      # 路由入口
+    └── modules/      # 按业务拆分的路由模块
+```
+
+## 说明
+
+| 目录 | 用途 | 约定 |
+| ------------ | -------- | ---------------------------------------------------------------------------------- |
+| `assets` | 静态资源 | 图片、字体等，按类型或模块分子目录 |
+| `components` | 通用组件 | 多页面复用；目录名 kebab-case，入口文件为 `index.vue`（即 `kebab-case/index.vue`） |
+| `layouts` | 布局组件 | 仅负责整体布局（侧栏、顶栏、内容区） |
+| `views` | 页面 | 每页一目录，入口 `index.vue`；页面私有组件放该目录下 `components/` |
+| `stores` | 状态 | 单文件对应一业务，如 `auth.ts`、`member.ts` |
+| `api` | 接口 | 与后端一一封装，按模块分文件（若项目用 `services/` 可沿用） |
+| `utils` | 工具 | 纯函数、格式化、校验等 |
+| `types` | 类型 | 全局接口/类型，可与 API 响应对应 |
+| `styles` | 样式 | 全局样式、变量、覆盖第三方库样式 |
+| `router` | 路由 | 入口 `index.ts`，业务路由在 `modules/` 下按模块拆分 |
+
+- 新增功能时按上述目录放置；若项目已使用 `services/` 等命名，可继续沿用并与团队统一。

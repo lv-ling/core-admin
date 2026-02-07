@@ -1,0 +1,61 @@
+/**
+ * 浅色/深色主题变量
+ * 修改 --theme-primary 可同时影响 Element 与布局主题色
+ * html.dark 时使用深色变量，全页面生效
+ *
+ * 配色来源：护眼与无障碍常用方案
+ * - 浅色：Open Color 灰阶（#f8f9fa / #f1f3f5 等）降低纯白刺眼，符合 WCAG 对比度
+ * - 深色：深炭灰代替纯黑 (#212529 / #1c1e21)，减轻长时间观看疲劳
+ * - 主色：柔和蓝 #228be6（Open Color blue），信任感、饱和度适中
+ * 参考：Open Color、Radix Colors、Material Dark 的对比与色阶用法
+ */
+:root {
+  --theme-primary: #228be6;
+  --el-color-primary: var(--theme-primary);
+
+  /* 全局页面：Open Color gray-0 / gray-1，避免纯白 */
+  --app-bg: #f8f9fa;
+  --app-text: #343a40;
+
+  /* 左侧栏：深灰，与主色协调 */
+  --layout-sidebar-bg: #212529;
+  --layout-sidebar-submenu-bg: #1a1d21;
+  --layout-sidebar-active-bg: color-mix(
+    in srgb,
+    var(--theme-primary) 32%,
+    #212529
+  );
+  --layout-sidebar-text: #868e96;
+  --layout-sidebar-text-active: #f8f9fa;
+
+  /* 顶栏、标签栏、内容区：灰阶分层 */
+  --layout-header-bg: #ffffff;
+  --layout-header-border: #e9ecef;
+  --layout-tag-bg: #ffffff;
+  --layout-tag-border: #dee2e6;
+  --layout-tag-item-bg: #f1f3f5;
+  --layout-content-bg: #f8f9fa;
+}
+
+/* 深色模式：深炭灰背景，避免纯黑 #000 */
+html.dark {
+  --app-bg: #1c1e21;
+  --app-text: #e9ecef;
+
+  --layout-sidebar-bg: #212529;
+  --layout-sidebar-submenu-bg: #1a1d21;
+  --layout-sidebar-active-bg: color-mix(
+    in srgb,
+    var(--theme-primary) 28%,
+    #212529
+  );
+  --layout-sidebar-text: #868e96;
+  --layout-sidebar-text-active: #f8f9fa;
+
+  --layout-header-bg: #212529;
+  --layout-header-border: #343a40;
+  --layout-tag-bg: #212529;
+  --layout-tag-border: #343a40;
+  --layout-tag-item-bg: #2b2f33;
+  --layout-content-bg: #1c1e21;
+}

@@ -1,0 +1,13 @@
+---
+description: 开发规范；Composition API、API 封装、Pinia、路由、组件。
+alwaysApply: false
+---
+
+# 开发规范
+
+- **API**：优先使用 Composition API（`<script setup>`），不新增 Options API 页面。
+- **响应式**：合理使用 `computed` 和 `watch`，避免多余计算与重复逻辑。
+- **API 封装**：接口统一放在 `api/`（或 `services/`）中，按模块拆分（如 `member.ts`、`auth.ts`），使用模块化导出。
+- **状态管理**：统一使用 Pinia，状态与业务逻辑封装在 `stores/` 中，按模块拆分。
+- **路由**：使用懒加载（`() => import('@/views/xxx')`），路由配置放在 `router/` 下模块化管理（如 `router/modules/`）。详见 @agents/router.mdc。
+- **组件**：保持单一职责，避免单文件过大；可复用逻辑抽成 composables。

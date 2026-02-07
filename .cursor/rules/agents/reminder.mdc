@@ -1,0 +1,11 @@
+---
+description: 重要提醒；必守项汇总。
+alwaysApply: false
+---
+
+# 重要提醒
+
+- 与用户对话、注释、提交信息使用中文；变量、函数、类型名使用英文。
+- 优先使用 Element Plus 与原子 CSS，必须使用 TypeScript 并写清类型。
+- API 与状态管理按模块封装在 `api/`（或 `services/`）、`stores/` 中，路由懒加载并模块化管理。
+- 提交前必须通过 `npm run lint`；开发时遵循 `.cursor/rules/` 下规则，减少重复说明与 token 消耗。

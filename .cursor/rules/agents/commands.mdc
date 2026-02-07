@@ -1,0 +1,15 @@
+---
+description: 核心命令；dev、build、lint、format、type-check。
+alwaysApply: false
+---
+
+# 核心命令
+
+```bash
+npm run dev          # 启动开发
+npm run build        # 生产构建
+npm run preview      # 预览构建
+npm run lint         # 运行 ESLint 等检查
+npm run format       # 代码格式化
+npm run type-check   # 类型检查
+```

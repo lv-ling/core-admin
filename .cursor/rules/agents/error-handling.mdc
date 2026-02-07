@@ -1,0 +1,9 @@
+---
+description: 错误处理；异步 try/catch、ElMessage、表单校验。
+alwaysApply: false
+---
+
+# 错误处理
+
+- 异步请求使用 `try/catch`，用户提示使用 Element Plus 的 `ElMessage`，错误详情可 `console.error`。
+- 表单校验等可复用 Element Plus 的 `FormInstance` 与校验规则，错误信息用中文展示。

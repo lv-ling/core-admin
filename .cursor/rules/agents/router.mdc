@@ -1,0 +1,10 @@
+---
+description: 路由规范；懒加载、模块化、meta。
+alwaysApply: false
+---
+
+# 路由规范
+
+- **懒加载**：路由组件使用 `() => import('@/views/xxx')` 等形式懒加载。
+- **模块化**：路由按业务拆到 `router/` 下（如 `router/modules/members.ts`），在入口中合并。
+- **meta**：为路由配置 meta（如 title、requiresAuth、icon）便于权限与面包屑。

@@ -1,0 +1,33 @@
+---
+description: 单文件组件结构规范；script / template / style 顺序与块内顺序。
+alwaysApply: false
+---
+
+# 结构规范（单文件组件）
+
+必须遵守顺序与约定：
+
+```vue
+<script setup lang="ts">
+// 1. 导入（顺序：Vue 相关 → 第三方 → 项目内部）
+// 2. 类型/接口定义
+// 3. Props、Emits
+// 4. 响应式数据
+// 5. 计算属性
+// 6. 方法
+// 7. 生命周期 / watch
+</script>
+
+<template>
+  <!-- 使用 Element Plus 与原子类，结构清晰 -->
+</template>
+
+<style lang="scss" scoped>
+/* 仅在原子类无法满足时使用，建议 BEM 或与组件相关的类名 */
+</style>
+```
+
+- **块顺序**：**script 在顶层**，其次 template，最后 style。
+- 使用 `<script setup lang="ts">`（或项目允许的 `lang="tsx"`），可在上述 1～7 内自由扩展。
+- `<template>` 与 `<style>` 顺序固定为：template 在前，style 在后。
+- 若使用 scoped 样式，类名建议 BEM 或与组件名相关，避免全局污染。

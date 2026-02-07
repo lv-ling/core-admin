@@ -1,0 +1,7 @@
+export { default as WelcomeHeader } from './welcome-header/index.vue'
+export { default as ProductShortcuts } from './product-shortcuts/index.vue'
+export { default as WorkItems } from './work-items/index.vue'
+export { default as IterationProgress } from './iteration-progress/index.vue'
+export { default as WorkSummary } from './work-summary/index.vue'
+export { default as MyProjects } from './my-projects/index.vue'
+export { default as MyRepos } from './my-repos/index.vue'

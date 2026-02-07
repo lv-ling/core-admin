@@ -1,0 +1,14 @@
+---
+description: 代码规则；UI 组件、样式、TypeScript、命名、质量。
+alwaysApply: false
+---
+
+# 代码规则
+
+- **UI 组件**：优先使用 Element Plus 完成页面，其次使用项目内封装组件。
+- **样式**：优先使用原子 CSS 写样式，减少手写大段 CSS；**项目使用 UnoCSS** 提供原子类（Tailwind 风格），在模板或 JSX 中直接写工具类即可。
+- **语言**：必须使用 TypeScript，禁止在业务代码中使用 `any`，必要时用 `unknown` 或具体类型。
+- **TSX**：支持 TSX 语法，`<script>` 中语言可为 `lang="ts"` 或 `lang="tsx"`（以项目 ESLint 为准）；可在模板与 script 中使用 JSX/TSX。
+- **类型**：必须为变量、函数参数与返回值、API 响应等书写类型；为 API 响应定义明确接口（如 `interface IXXXRes`）。详见 @agents/typescript.mdc。
+- **命名**：统一遵循命名规范，见 @agents/naming.mdc；**组件文件**：目录名 kebab-case，入口文件统一为 **`index.vue`**（即 `kebab-case/index.vue`）。
+- **质量**：必须符合 ESLint 规范，提交前通过 `npm run lint`。详见 @agents/eslint-prettier.mdc。

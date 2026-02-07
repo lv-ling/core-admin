@@ -1,0 +1,11 @@
+---
+description: 语言规则；与用户对话、注释、提交信息、命名所用语言。
+alwaysApply: false
+---
+
+# 语言规则
+
+- **与用户对话**：一律使用中文。
+- **代码注释**：使用中文。
+- **Git 提交信息**：使用中文，并遵循「提交信息规范」（见 @agents/commit.mdc）。
+- **变量、函数、类型名**：使用英文（camelCase / PascalCase 等，见 @agents/naming.mdc）。

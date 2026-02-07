@@ -1,0 +1,10 @@
+---
+description: ESLint 与 Prettier；检查与格式化要求。
+alwaysApply: false
+---
+
+# ESLint 与 Prettier
+
+- **ESLint**：负责语法与规范检查，必须通过 `npm run lint`。
+- **Prettier**：负责代码格式化，提交前建议执行 `npm run format`。
+- 提交前至少执行一次 `npm run lint`，不提交未通过 lint 的代码。

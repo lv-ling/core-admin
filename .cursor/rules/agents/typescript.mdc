@@ -1,0 +1,10 @@
+---
+description: TypeScript 与类型；路径别名、interface/type、API 类型。
+alwaysApply: false
+---
+
+# TypeScript 与类型
+
+- **路径别名**：使用 `@/` 指向 `src/`（如 `@/api`、`@/types`）。
+- **对象类型**：优先 `interface`，泛型或联合类型用 `type`。
+- **API 响应**：为每个接口定义请求/响应类型（如 `IGetUserListRes`、`ICreateUserReq`）。

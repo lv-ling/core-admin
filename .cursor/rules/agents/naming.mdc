@@ -1,0 +1,15 @@
+---
+description: 命名约定；常量、变量、接口、Vue 文件、TS 文件。
+alwaysApply: false
+---
+
+# 命名约定
+
+| 类型 | 规范 | 示例 |
+| ------------ | ----------------------------- | ---------------------------------------------- |
+| 常量 | SCREAMING_SNAKE_CASE | `API_BASE_URL` |
+| 变量、函数 | camelCase | `memberList`, `fetchUser` |
+| 接口、类型 | PascalCase（可加 I/T） | `IMember`, `TStatus` |
+| 模板中的组件标签 | PascalCase（大驼峰） | `<UserList />`、`<SidebarMenu />` |
+| Vue 组件文件 | kebab-case 目录 + `index.vue` | `member-list/index.vue`、`user-form/index.vue` |
+| TS 文件/目录 | kebab-case | `member-api.ts`, `user-list` |
