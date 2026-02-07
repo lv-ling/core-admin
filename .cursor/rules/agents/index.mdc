@@ -1,5 +1,5 @@
 ---
-description: 开发指南入口；通用规范见本目录下各子规则，列表页见 page/page-list.mdc。
+description: 开发指南入口；通用规范见本目录下各子规则。
 alwaysApply: false
 ---
 
@@ -7,7 +7,7 @@ alwaysApply: false
 
 - **项目信息**：管理系统；技术栈 Vue 3 + TypeScript + Vite + Pinia + Vue Router；UI 为 Element Plus；Node ^20.19.0 || >=22.12.0。
 - **通用规范**：先读本文件与 **AGENTS.md** 总览，再按场景查阅本目录（`agents/`）下子规则。
-- **列表页**（搜索表单 + 表格 + 分页）：必须按 **@page/page-list.mdc** 的目录与文件结构实现。
+- **列表页**（搜索表单 + 表格 + 分页）：在 `src/views/[模块]/` 下含 `index.vue`、`columns.tsx`、`form-items.tsx`。
 
 ## 子规则索引
 

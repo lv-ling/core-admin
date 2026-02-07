@@ -7,7 +7,7 @@ import {
   WorkSummary,
   MyProjects,
   MyRepos,
-} from "./components";
+} from './components'
 </script>
 
 <template>

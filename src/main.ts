@@ -6,7 +6,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/styles/theme.css'
 import 'virtual:uno.css'
 import router from '@/router'
-import './style.css'
+import '@/styles/index.css'
 import App from './App.vue'
 import { applyStoredTheme } from '@/stores/theme'
 

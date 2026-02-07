@@ -20,11 +20,7 @@
   /* 左侧栏：深灰，与主色协调 */
   --layout-sidebar-bg: #212529;
   --layout-sidebar-submenu-bg: #1a1d21;
-  --layout-sidebar-active-bg: color-mix(
-    in srgb,
-    var(--theme-primary) 32%,
-    #212529
-  );
+  --layout-sidebar-active-bg: color-mix(in srgb, var(--theme-primary) 32%, #212529);
   --layout-sidebar-text: #868e96;
   --layout-sidebar-text-active: #f8f9fa;
 
@@ -44,11 +40,7 @@ html.dark {
 
   --layout-sidebar-bg: #212529;
   --layout-sidebar-submenu-bg: #1a1d21;
-  --layout-sidebar-active-bg: color-mix(
-    in srgb,
-    var(--theme-primary) 28%,
-    #212529
-  );
+  --layout-sidebar-active-bg: color-mix(in srgb, var(--theme-primary) 28%, #212529);
   --layout-sidebar-text: #868e96;
   --layout-sidebar-text-active: #f8f9fa;
 

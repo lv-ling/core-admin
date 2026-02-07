@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="menu-page">
+  <div class="p-0">
     <ElCard>
       <template #header>
         <span>菜单/权限配置</span>
@@ -11,9 +10,3 @@
     </ElCard>
   </div>
 </template>
-
-<style scoped>
-.menu-page {
-  padding: 0;
-}
-</style>

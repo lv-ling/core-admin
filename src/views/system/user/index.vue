@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="user-page">
+  <div class="p-0">
     <ElCard>
       <template #header>
         <span>用户管理</span>
@@ -11,9 +10,3 @@
     </ElCard>
   </div>
 </template>
-
-<style scoped>
-.user-page {
-  padding: 0;
-}
-</style>

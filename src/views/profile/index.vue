@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="profile-page">
+  <div class="p-0">
     <ElCard>
       <template #header>
         <span>个人中心</span>
@@ -11,9 +10,3 @@
     </ElCard>
   </div>
 </template>
-
-<style scoped>
-.profile-page {
-  padding: 0;
-}
-</style>

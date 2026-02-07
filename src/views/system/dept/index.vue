@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="dept-page">
+  <div class="p-0">
     <ElCard>
       <template #header>
         <span>部门/组织</span>
@@ -11,9 +10,3 @@
     </ElCard>
   </div>
 </template>
-
-<style scoped>
-.dept-page {
-  padding: 0;
-}
-</style>

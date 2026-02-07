@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { Document, Folder } from "@element-plus/icons-vue";
-import { resolvePath } from "@/utils/route";
-import { useLayoutStore } from "@/stores/layout";
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Document, Folder } from '@element-plus/icons-vue'
+import { resolvePath } from '@/utils/route'
+import { useLayoutStore } from '@/stores/layout'
 
-const route = useRoute();
-const router = useRouter();
-const layoutStore = useLayoutStore();
+const route = useRoute()
+const router = useRouter()
+const layoutStore = useLayoutStore()
 
-const LAYOUT_NAME = "Home";
+const LAYOUT_NAME = 'Home'
 
 const menuRoutes = computed(() => {
-  const layoutRoute = router.getRoutes().find((r) => r.name === LAYOUT_NAME);
-  const children = layoutRoute?.children?.filter((c) => c.meta?.title) ?? [];
-  return children;
-});
+  const layoutRoute = router.getRoutes().find((r) => r.name === LAYOUT_NAME)
+  const children = layoutRoute?.children?.filter((c) => c.meta?.title) ?? []
+  return children
+})
 
-const activeMenu = computed(() => route.path);
+const activeMenu = computed(() => route.path)
 
-const asideWidth = computed(() =>
-  layoutStore.sidebarCollapsed ? "64px" : "200px"
-);
+const asideWidth = computed(() => (layoutStore.sidebarCollapsed ? '64px' : '200px'))
 </script>
 
 <template>
@@ -31,69 +29,59 @@ const asideWidth = computed(() =>
     :class="{ 'is-collapsed': layoutStore.sidebarCollapsed }"
   >
     <div class="sidebar-menu-logo">
-      {{ layoutStore.sidebarCollapsed ? "管" : "管理系统" }}
+      {{ layoutStore.sidebarCollapsed ? '管' : '管理系统' }}
     </div>
     <div class="sidebar-menu-nav-wrap">
-    <ElMenu
-      :default-active="activeMenu"
-      :collapse="layoutStore.sidebarCollapsed"
-      class="sidebar-menu-nav"
-      router
-    >
-      <template v-for="item in menuRoutes" :key="String(item.path)">
-        <ElMenuItem
-          v-if="!item.children?.length"
-          :index="resolvePath('/', item.path || '')"
-        >
-          <ElIcon><Document /></ElIcon>
-          <span>{{ item.meta?.title ?? item.name }}</span>
-        </ElMenuItem>
-        <ElSubMenu v-else :index="resolvePath('/', item.path || '')">
-          <template #title>
-            <ElIcon><Folder /></ElIcon>
+      <ElMenu
+        :default-active="activeMenu"
+        :collapse="layoutStore.sidebarCollapsed"
+        class="sidebar-menu-nav"
+        router
+      >
+        <template v-for="item in menuRoutes" :key="String(item.path)">
+          <ElMenuItem v-if="!item.children?.length" :index="resolvePath('/', item.path || '')">
+            <ElIcon><Document /></ElIcon>
             <span>{{ item.meta?.title ?? item.name }}</span>
-          </template>
-          <template v-for="sub in item.children" :key="String(sub.path)">
-            <ElMenuItem
-              v-if="!sub.children?.length"
-              :index="
-                resolvePath(resolvePath('/', item.path || ''), sub.path || '')
-              "
-            >
-              <ElIcon><Document /></ElIcon>
-              <span>{{ sub.meta?.title ?? sub.name }}</span>
-            </ElMenuItem>
-            <ElSubMenu
-              v-else
-              :index="
-                resolvePath(resolvePath('/', item.path || ''), sub.path || '')
-              "
-            >
-              <template #title>
-                <ElIcon><Folder /></ElIcon>
-                <span>{{ sub.meta?.title ?? sub.name }}</span>
-              </template>
+          </ElMenuItem>
+          <ElSubMenu v-else :index="resolvePath('/', item.path || '')">
+            <template #title>
+              <ElIcon><Folder /></ElIcon>
+              <span>{{ item.meta?.title ?? item.name }}</span>
+            </template>
+            <template v-for="sub in item.children" :key="String(sub.path)">
               <ElMenuItem
-                v-for="third in sub.children"
-                :key="String(third.path)"
-                :index="
-                  resolvePath(
-                    resolvePath(
-                      resolvePath('/', item.path || ''),
-                      sub.path || ''
-                    ),
-                    third.path || ''
-                  )
-                "
+                v-if="!sub.children?.length"
+                :index="resolvePath(resolvePath('/', item.path || ''), sub.path || '')"
               >
                 <ElIcon><Document /></ElIcon>
-                <span>{{ third.meta?.title ?? third.name }}</span>
+                <span>{{ sub.meta?.title ?? sub.name }}</span>
               </ElMenuItem>
-            </ElSubMenu>
-          </template>
-        </ElSubMenu>
-      </template>
-    </ElMenu>
+              <ElSubMenu
+                v-else
+                :index="resolvePath(resolvePath('/', item.path || ''), sub.path || '')"
+              >
+                <template #title>
+                  <ElIcon><Folder /></ElIcon>
+                  <span>{{ sub.meta?.title ?? sub.name }}</span>
+                </template>
+                <ElMenuItem
+                  v-for="third in sub.children"
+                  :key="String(third.path)"
+                  :index="
+                    resolvePath(
+                      resolvePath(resolvePath('/', item.path || ''), sub.path || ''),
+                      third.path || ''
+                    )
+                  "
+                >
+                  <ElIcon><Document /></ElIcon>
+                  <span>{{ third.meta?.title ?? third.name }}</span>
+                </ElMenuItem>
+              </ElSubMenu>
+            </template>
+          </ElSubMenu>
+        </template>
+      </ElMenu>
     </div>
   </ElAside>
 </template>

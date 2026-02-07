@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { SwitchButton } from "@element-plus/icons-vue";
-import { useAuthStore } from "@/stores/auth";
-import { useThemeStore } from "@/stores/theme";
+import { useRouter } from 'vue-router'
+import { SwitchButton } from '@element-plus/icons-vue'
+import { useAuthStore } from '@/stores/auth'
+import { useThemeStore } from '@/stores/theme'
 
-const router = useRouter();
-const auth = useAuthStore();
-const themeStore = useThemeStore();
+const router = useRouter()
+const auth = useAuthStore()
+const themeStore = useThemeStore()
 
 /** 项目内主题色预设（与 theme.css 一致） */
 const themePresets = [
-  { color: "#228be6", label: "蓝" },
-  { color: "#0d9488", label: "青绿" },
-  { color: "#6366f1", label: "靛蓝" },
-  { color: "#409eff", label: "经典蓝" },
-];
+  { color: '#228be6', label: '蓝' },
+  { color: '#0d9488', label: '青绿' },
+  { color: '#6366f1', label: '靛蓝' },
+  { color: '#409eff', label: '经典蓝' },
+]
 
 function setTheme(color: string) {
-  themeStore.setThemeColor(color);
+  themeStore.setThemeColor(color)
 }
 
 function logout() {
-  auth.logout();
-  router.push("/login");
+  auth.logout()
+  router.push('/login')
 }
 </script>
 
@@ -33,7 +33,7 @@ function logout() {
       class="header-user-menu__avatar"
       :style="{ background: 'var(--el-color-primary)' }"
     >
-      {{ auth.userInfo?.name?.slice(0, 1) ?? "用" }}
+      {{ auth.userInfo?.name?.slice(0, 1) ?? '用' }}
     </ElAvatar>
     <template #dropdown>
       <div class="header-user-menu__dropdown">
@@ -45,9 +45,7 @@ function logout() {
               :key="preset.color"
               class="header-user-menu__color-dot"
               :class="{
-                'is-active':
-                  themeStore.themeColor?.toLowerCase() ===
-                  preset.color.toLowerCase(),
+                'is-active': themeStore.themeColor?.toLowerCase() === preset.color.toLowerCase(),
               }"
               :style="{ background: preset.color }"
               :title="preset.label"
@@ -66,10 +64,7 @@ function logout() {
           />
         </div>
         <ElDivider class="header-user-menu__divider" />
-        <div
-          class="header-user-menu__item header-user-menu__item--action"
-          @click="logout"
-        >
+        <div class="header-user-menu__item header-user-menu__item--action" @click="logout">
           <ElIcon><SwitchButton /></ElIcon>
           <span>退出登录</span>
         </div>

@@ -1,19 +1,19 @@
 <script setup lang="ts">
 interface ShortcutItem {
-  icon: string;
-  label: string;
+  icon: string
+  label: string
 }
 
 const shortcuts: ShortcutItem[] = [
-  { icon: "X", label: "项目协作" },
-  { icon: "r", label: "效能洞察" },
-  { icon: "B", label: "钉钉文档" },
-  { icon: "C", label: "代码管理" },
-  { icon: "F", label: "流水线" },
-  { icon: "P", label: "制品仓库" },
-  { icon: "A", label: "应用交付" },
-  { icon: "r", label: "测试管理" },
-];
+  { icon: 'X', label: '项目协作' },
+  { icon: 'r', label: '效能洞察' },
+  { icon: 'B', label: '钉钉文档' },
+  { icon: 'C', label: '代码管理' },
+  { icon: 'F', label: '流水线' },
+  { icon: 'P', label: '制品仓库' },
+  { icon: 'A', label: '应用交付' },
+  { icon: 'r', label: '测试管理' },
+]
 </script>
 
 <template>

@@ -1,8 +1,5 @@
-import {
-  createRouter,
-  createWebHistory,
-  type RouteRecordRaw,
-} from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { getMenuRoutes } from '@/api/auth'
 import type { IMenuRouteItem } from '@/types/auth'
@@ -16,9 +13,7 @@ function menuItemToRoute(item: IMenuRouteItem): RouteRecordRaw {
   const path = item.path.startsWith('/') ? item.path.slice(1) : item.path
   const comp = (item.component ?? path).replace(/^\//, '')
   const viewKey = `@/views/${comp}/index.vue`
-  const loader =
-    viewModules[viewKey] ??
-    (() => import('@/views/dashboard/index.vue'))
+  const loader = viewModules[viewKey] ?? (() => import('@/views/dashboard/index.vue'))
   return {
     path,
     name: item.name ?? path,
@@ -53,8 +48,10 @@ router.beforeEach(async (to, _from, next) => {
         auth.setRoutesFetched(true)
         next({ ...to, replace: true })
         return
-      } catch {
+      } catch (err) {
         auth.setRoutesFetched(true)
+        ElMessage.error('加载菜单失败，请稍后重试')
+        console.error('getMenuRoutes failed:', err)
       }
     }
   } else if (!routerModules.whiteList.includes(to.path)) {

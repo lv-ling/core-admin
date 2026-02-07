@@ -37,5 +37,5 @@
 ## 🚀 使用方式
 
 - **Agent**：优先查阅 **`.cursor/rules/index.mdc`**，再按需引用 `@agents/xxx.mdc`。
-- **列表页**（带搜索表单 + 表格 + 分页）：必须按 **`.cursor/rules/XXX`** 的目录与文件结构实现（`index.vue`、`columns.tsx`、`form-items.tsx`）。
+- **列表页**（带搜索表单 + 表格 + 分页）：在 `src/views/[模块]/` 下含 `index.vue`、`columns.tsx`、`form-items.tsx`。
 - 保证与上述规则一致，减少重复说明与 token 消耗。

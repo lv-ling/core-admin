@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { ArrowDown } from "@element-plus/icons-vue";
+import { ref } from 'vue'
+import { ArrowDown } from '@element-plus/icons-vue'
 
 interface WorkItem {
-  id: string;
-  title: string;
-  status: string;
-  priority: "高" | "中";
-  creator: string;
-  project: string;
+  id: string
+  title: string
+  status: string
+  priority: '高' | '中'
+  creator: string
+  project: string
 }
 
-const activeTab = ref("requirement");
+const activeTab = ref('requirement')
 const items: WorkItem[] = [
   {
-    id: "1",
-    title: "全局搜索支持指定类型搜索",
-    status: "待处理",
-    priority: "高",
-    creator: "设计创建",
-    project: "工作台项目",
+    id: '1',
+    title: '全局搜索支持指定类型搜索',
+    status: '待处理',
+    priority: '高',
+    creator: '设计创建',
+    project: '工作台项目',
   },
   {
-    id: "2",
-    title: "工作项详情支持关联需求",
-    status: "待处理",
-    priority: "中",
-    creator: "设计创建",
-    project: "双十一活动交付空间",
+    id: '2',
+    title: '工作项详情支持关联需求',
+    status: '待处理',
+    priority: '中',
+    creator: '设计创建',
+    project: '双十一活动交付空间',
   },
-];
+]
 </script>
 
 <template>
@@ -78,11 +78,7 @@ const items: WorkItem[] = [
         </ElDropdown>
         <span
           class="px-1.5 text-xs"
-          :class="
-            item.priority === '高'
-              ? 'text-[#fa8c16]'
-              : 'text-[var(--el-color-primary)]'
-          "
+          :class="item.priority === '高' ? 'text-[#fa8c16]' : 'text-[var(--el-color-primary)]'"
         >
           {{ item.priority }}
         </span>

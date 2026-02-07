@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const layoutRoute: RouteRecordRaw = {
   path: '/',
   name: 'Home',
-  component: () => import('@/layouts/app-layout.vue'),
+  component: () => import('@/layouts/index.vue'),
   children: [],
 }
 

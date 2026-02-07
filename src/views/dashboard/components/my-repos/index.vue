@@ -1,47 +1,47 @@
 <script setup lang="ts">
 interface RepoItem {
-  id: string;
-  name: string;
-  initial: string;
-  color: string;
-  isPrivate: boolean;
-  updated: string;
+  id: string
+  name: string
+  initial: string
+  color: string
+  isPrivate: boolean
+  updated: string
 }
 
 const repos: RepoItem[] = [
   {
-    id: "1",
-    name: "code-search",
-    initial: "C",
-    color: "#51cf66",
+    id: '1',
+    name: 'code-search',
+    initial: 'C',
+    color: '#51cf66',
     isPrivate: true,
-    updated: "2022-12-12",
+    updated: '2022-12-12',
   },
   {
-    id: "2",
-    name: "core-admin",
-    initial: "G",
-    color: "#fa8c16",
+    id: '2',
+    name: 'core-admin',
+    initial: 'G',
+    color: '#fa8c16',
     isPrivate: true,
-    updated: "2022-12-11",
+    updated: '2022-12-11',
   },
   {
-    id: "3",
-    name: "web-app",
-    initial: "W",
-    color: "#69db7c",
+    id: '3',
+    name: 'web-app',
+    initial: 'W',
+    color: '#69db7c',
     isPrivate: true,
-    updated: "2022-12-10",
+    updated: '2022-12-10',
   },
   {
-    id: "4",
-    name: "toolkit",
-    initial: "T",
-    color: "#da8c5c",
+    id: '4',
+    name: 'toolkit',
+    initial: 'T',
+    color: '#da8c5c',
     isPrivate: true,
-    updated: "2022-12-09",
+    updated: '2022-12-09',
   },
-];
+]
 </script>
 
 <template>
@@ -67,7 +67,7 @@ const repos: RepoItem[] = [
         <div class="flex flex-col gap-0.5">
           <span class="text-sm text-[var(--app-text)]">{{ r.name }}</span>
           <span class="text-xs text-[var(--el-text-color-secondary)]">
-            {{ r.isPrivate ? "私有" : "公开" }} · 更新于 {{ r.updated }}
+            {{ r.isPrivate ? '私有' : '公开' }} · 更新于 {{ r.updated }}
           </span>
         </div>
       </li>
