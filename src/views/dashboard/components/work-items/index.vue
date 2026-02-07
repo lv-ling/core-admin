@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ref } from "vue";
+import { ArrowDown } from "@element-plus/icons-vue";
 
 interface WorkItem {
-  id: string
-  title: string
-  status: string
-  priority: '高' | '中'
-  creator: string
-  project: string
+  id: string;
+  title: string;
+  status: string;
+  priority: "高" | "中";
+  creator: string;
+  project: string;
 }
 
-const activeTab = ref('requirement')
+const activeTab = ref("requirement");
 const items: WorkItem[] = [
   {
-    id: '1',
-    title: '全局搜索支持指定类型搜索',
-    status: '待处理',
-    priority: '高',
-    creator: '设计创建',
-    project: '工作台项目',
+    id: "1",
+    title: "全局搜索支持指定类型搜索",
+    status: "待处理",
+    priority: "高",
+    creator: "设计创建",
+    project: "工作台项目",
   },
   {
-    id: '2',
-    title: '工作项详情支持关联需求',
-    status: '待处理',
-    priority: '中',
-    creator: '设计创建',
-    project: '双十一活动交付空间',
+    id: "2",
+    title: "工作项详情支持关联需求",
+    status: "待处理",
+    priority: "中",
+    creator: "设计创建",
+    project: "双十一活动交付空间",
   },
-]
+];
 </script>
 
 <template>
-  <ElCard class="work-items" shadow="never">
+  <ElCard class="mb-4" shadow="never">
     <template #header>
-      <div class="work-items__head">
+      <div class="flex items-center justify-between">
         <span>工作项</span>
-        <div class="work-items__actions">
+        <div class="flex items-center gap-2">
           <ElDropdown>
-            <span class="work-items__dropdown">我负责的</span>
+            <span class="cursor-pointer text-[var(--app-text)]">我负责的</span>
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem>我负责的</ElDropdownItem>
@@ -55,10 +55,14 @@ const items: WorkItem[] = [
       <ElTabPane label="需求 6" name="requirement" />
       <ElTabPane label="任务 2" name="task" />
     </ElTabs>
-    <ul class="work-items__list">
-      <li v-for="item in items" :key="item.id" class="work-items__row">
-        <span class="work-items__dot work-items__dot--high" />
-        <span class="work-items__title">{{ item.title }}</span>
+    <ul class="m-0 list-none p-0">
+      <li
+        v-for="item in items"
+        :key="item.id"
+        class="flex items-center gap-3 border-b border-[var(--layout-tag-border)] py-2.5 text-[13px] last:border-b-0"
+      >
+        <span class="h-2 w-2 shrink-0 rounded-full bg-[#52c41a]" />
+        <span class="min-w-0 flex-1 text-[var(--app-text)]">{{ item.title }}</span>
         <ElDropdown>
           <ElButton size="small" type="primary" link>
             {{ item.status }}
@@ -73,77 +77,19 @@ const items: WorkItem[] = [
           </template>
         </ElDropdown>
         <span
-          class="work-items__priority"
-          :class="item.priority === '高' ? 'work-items__priority--high' : 'work-items__priority--mid'"
+          class="px-1.5 text-xs"
+          :class="
+            item.priority === '高'
+              ? 'text-[#fa8c16]'
+              : 'text-[var(--el-color-primary)]'
+          "
         >
           {{ item.priority }}
         </span>
-        <span class="work-items__meta">{{ item.creator }} · {{ item.project }}</span>
+        <span class="text-xs text-[var(--el-text-color-secondary)]">
+          {{ item.creator }} · {{ item.project }}
+        </span>
       </li>
     </ul>
   </ElCard>
 </template>
-
-<style scoped>
-.work-items {
-  margin-bottom: 16px;
-}
-.work-items__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.work-items__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.work-items__dropdown {
-  cursor: pointer;
-  color: var(--app-text);
-}
-.work-items__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.work-items__row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--layout-tag-border);
-  font-size: 13px;
-}
-.work-items__row:last-child {
-  border-bottom: none;
-}
-.work-items__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.work-items__dot--high {
-  background: #52c41a;
-}
-.work-items__title {
-  flex: 1;
-  min-width: 0;
-  color: var(--app-text);
-}
-.work-items__priority {
-  font-size: 12px;
-  padding: 0 6px;
-}
-.work-items__priority--high {
-  color: #fa8c16;
-}
-.work-items__priority--mid {
-  color: var(--el-color-primary);
-}
-.work-items__meta {
-  color: var(--el-text-color-secondary);
-  font-size: 12px;
-}
-</style>

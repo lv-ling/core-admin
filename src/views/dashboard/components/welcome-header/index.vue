@@ -6,24 +6,10 @@ const greeting = "早上好";
 </script>
 
 <template>
-  <div class="welcome-header">
-    <h1 class="welcome-header__title">
+  <div class="flex items-center justify-between">
+    <h1 class="m-0 text-xl font-semibold text-[var(--app-text)]">
       {{ greeting }}, {{ auth.userInfo?.name ?? "用户" }}
     </h1>
     <ElButton type="primary" link>修改工作台</ElButton>
   </div>
 </template>
-
-<style scoped>
-.welcome-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.welcome-header__title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--app-text);
-}
-</style>

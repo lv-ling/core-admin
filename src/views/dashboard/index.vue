@@ -11,8 +11,11 @@ import {
 </script>
 
 <template>
-  <div class="dashboard-page">
-    <div class="dashboard-page__sticky-header">
+  <div class="p-0">
+    <div
+      class="sticky top-0 z-[9] bg-[var(--layout-content-bg)] px-4 pb-4"
+      style="margin: 0 -16px; box-shadow: 0 8px 0 var(--layout-content-bg)"
+    >
       <WelcomeHeader />
     </div>
     <ProductShortcuts />
@@ -29,16 +32,3 @@ import {
     </ElRow>
   </div>
 </template>
-
-<style scoped>
-.dashboard-page {
-  padding: 0;
-}
-.dashboard-page__sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 9;
-  background-color: var(--layout-content-bg);
-  box-shadow: 0 8px 0 var(--layout-content-bg);
-}
-</style>
