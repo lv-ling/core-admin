@@ -193,7 +193,7 @@ export function getColDefs(): ColDef<IUser>[] {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: {
-        values: ['active', 'inactive','error'],
+        values: ['active', 'inactive', 'error'],
         getValidationErrors: (params: { value: unknown }) => {
           const err = validateStatus(params.value)
           return err ? [err] : null

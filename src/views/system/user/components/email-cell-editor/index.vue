@@ -46,7 +46,11 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="wrapperRef" class="email-editor" :class="{ 'email-editor--invalid': isInvalid }">
+  <div
+    ref="wrapperRef"
+    class="email-editor"
+    :class="{ 'email-editor--invalid': isInvalid }"
+  >
     <ElInput
       v-model="value"
       size="small"

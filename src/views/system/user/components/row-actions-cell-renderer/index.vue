@@ -35,10 +35,27 @@ function handleRevert() {
 
 <template>
   <div class="row-actions">
-    <ElButton size="small" type="primary" @click="handleSave">保存</ElButton>
-    <ElButton size="small" @click="handleValidate">校验</ElButton>
-    <ElButton size="small" @click="handleCancel">取消</ElButton>
-    <ElButton size="small" @click="handleRevert">还原</ElButton>
+    <ElButton
+      size="small"
+      type="primary"
+      @click="handleSave"
+      >保存</ElButton
+    >
+    <ElButton
+      size="small"
+      @click="handleValidate"
+      >校验</ElButton
+    >
+    <ElButton
+      size="small"
+      @click="handleCancel"
+      >取消</ElButton
+    >
+    <ElButton
+      size="small"
+      @click="handleRevert"
+      >还原</ElButton
+    >
   </div>
 </template>
 

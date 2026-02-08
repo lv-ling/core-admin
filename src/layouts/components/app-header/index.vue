@@ -32,7 +32,11 @@ const breadcrumbItems = computed(() => {
 <template>
   <ElHeader class="app-header-root">
     <div class="app-header-left flex items-center">
-      <ElButton link class="app-header-collapse-btn" @click="layoutStore.toggleSidebar()">
+      <ElButton
+        link
+        class="app-header-collapse-btn"
+        @click="layoutStore.toggleSidebar()"
+      >
         <ElIcon :size="20">
           <Expand v-if="layoutStore.sidebarCollapsed" />
           <Fold v-else />

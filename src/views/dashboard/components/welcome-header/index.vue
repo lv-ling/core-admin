@@ -10,6 +10,10 @@ const greeting = '早上好'
     <h1 class="m-0 text-xl font-semibold text-[var(--app-text)]">
       {{ greeting }}, {{ auth.userInfo?.name ?? '用户' }}
     </h1>
-    <ElButton type="primary" link>修改工作台</ElButton>
+    <ElButton
+      type="primary"
+      link
+      >修改工作台</ElButton
+    >
   </div>
 </template>

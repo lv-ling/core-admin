@@ -20,7 +20,10 @@ const percent = Math.round((sprint.done / sprint.total) * 100)
 </script>
 
 <template>
-  <ElCard class="mb-4" shadow="never">
+  <ElCard
+    class="mb-4"
+    shadow="never"
+  >
     <template #header>
       <div class="flex items-center justify-between">
         <span>迭代进展</span>
@@ -35,7 +38,11 @@ const percent = Math.round((sprint.done / sprint.total) * 100)
     <p class="mb-1 mt-0 text-[13px] text-[var(--el-text-color-secondary)]">
       {{ sprint.project }}
     </p>
-    <ElProgress :percentage="percent" :stroke-width="8" class="my-3" />
+    <ElProgress
+      :percentage="percent"
+      :stroke-width="8"
+      class="my-3"
+    />
     <p class="m-0 text-[13px] text-[var(--el-text-color-secondary)]">
       {{ sprint.done }}/{{ sprint.total }}
     </p>

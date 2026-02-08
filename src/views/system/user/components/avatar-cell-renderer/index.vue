@@ -19,7 +19,11 @@ const value = computed(() => props.params.value as string | undefined)
       class="avatar-cell__img"
       preview-teleported
     />
-    <span v-else class="avatar-cell__placeholder">暂无</span>
+    <span
+      v-else
+      class="avatar-cell__placeholder"
+      >暂无</span
+    >
   </div>
 </template>
 

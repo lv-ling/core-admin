@@ -15,9 +15,11 @@
   "dependencies": {
     "@ag-grid-community/locale": "^35.0.1",
     "@element-plus/icons-vue": "^2.3.2",
+    "@handsontable/vue3": "^16.2.0",
     "ag-grid-community": "^35.0.1",
     "ag-grid-vue3": "^35.0.1",
     "element-plus": "^2.13.2",
+    "handsontable": "^16.2.0",
     "pinia": "^2.3.0",
     "vue": "^3.5.24",
     "vue-router": "^4.5.0"

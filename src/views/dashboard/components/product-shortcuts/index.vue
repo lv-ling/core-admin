@@ -17,7 +17,10 @@ const shortcuts: ShortcutItem[] = [
 </script>
 
 <template>
-  <ElCard class="mb-4" shadow="never">
+  <ElCard
+    class="mb-4"
+    shadow="never"
+  >
     <template #header>
       <span>云效产品</span>
     </template>

@@ -27,7 +27,10 @@ function logout() {
 </script>
 
 <template>
-  <ElDropdown trigger="hover" placement="bottom-end">
+  <ElDropdown
+    trigger="hover"
+    placement="bottom-end"
+  >
     <ElAvatar
       :size="32"
       class="header-user-menu__avatar"
@@ -64,7 +67,10 @@ function logout() {
           />
         </div>
         <ElDivider class="header-user-menu__divider" />
-        <div class="header-user-menu__item header-user-menu__item--action" @click="logout">
+        <div
+          class="header-user-menu__item header-user-menu__item--action"
+          @click="logout"
+        >
           <ElIcon><SwitchButton /></ElIcon>
           <span>退出登录</span>
         </div>

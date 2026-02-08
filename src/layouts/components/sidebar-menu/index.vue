@@ -38,17 +38,29 @@ const asideWidth = computed(() => (layoutStore.sidebarCollapsed ? '64px' : '200p
         class="sidebar-menu-nav"
         router
       >
-        <template v-for="item in menuRoutes" :key="String(item.path)">
-          <ElMenuItem v-if="!item.children?.length" :index="resolvePath('/', item.path || '')">
+        <template
+          v-for="item in menuRoutes"
+          :key="String(item.path)"
+        >
+          <ElMenuItem
+            v-if="!item.children?.length"
+            :index="resolvePath('/', item.path || '')"
+          >
             <ElIcon><Document /></ElIcon>
             <span>{{ item.meta?.title ?? item.name }}</span>
           </ElMenuItem>
-          <ElSubMenu v-else :index="resolvePath('/', item.path || '')">
+          <ElSubMenu
+            v-else
+            :index="resolvePath('/', item.path || '')"
+          >
             <template #title>
               <ElIcon><Folder /></ElIcon>
               <span>{{ item.meta?.title ?? item.name }}</span>
             </template>
-            <template v-for="sub in item.children" :key="String(sub.path)">
+            <template
+              v-for="sub in item.children"
+              :key="String(sub.path)"
+            >
               <ElMenuItem
                 v-if="!sub.children?.length"
                 :index="resolvePath(resolvePath('/', item.path || ''), sub.path || '')"

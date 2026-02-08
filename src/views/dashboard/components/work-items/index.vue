@@ -33,7 +33,10 @@ const items: WorkItem[] = [
 </script>
 
 <template>
-  <ElCard class="mb-4" shadow="never">
+  <ElCard
+    class="mb-4"
+    shadow="never"
+  >
     <template #header>
       <div class="flex items-center justify-between">
         <span>工作项</span>
@@ -47,13 +50,23 @@ const items: WorkItem[] = [
               </ElDropdownMenu>
             </template>
           </ElDropdown>
-          <ElButton link type="primary">全部</ElButton>
+          <ElButton
+            link
+            type="primary"
+            >全部</ElButton
+          >
         </div>
       </div>
     </template>
     <ElTabs v-model="activeTab">
-      <ElTabPane label="需求 6" name="requirement" />
-      <ElTabPane label="任务 2" name="task" />
+      <ElTabPane
+        label="需求 6"
+        name="requirement"
+      />
+      <ElTabPane
+        label="任务 2"
+        name="task"
+      />
     </ElTabs>
     <ul class="m-0 list-none p-0">
       <li
@@ -64,7 +77,11 @@ const items: WorkItem[] = [
         <span class="h-2 w-2 shrink-0 rounded-full bg-[#52c41a]" />
         <span class="min-w-0 flex-1 text-[var(--app-text)]">{{ item.title }}</span>
         <ElDropdown>
-          <ElButton size="small" type="primary" link>
+          <ElButton
+            size="small"
+            type="primary"
+            link
+          >
             {{ item.status }}
             <ElIcon><ArrowDown /></ElIcon>
           </ElButton>

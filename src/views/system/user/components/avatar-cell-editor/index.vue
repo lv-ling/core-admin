@@ -28,8 +28,15 @@ defineExpose({ getValue })
 
 <template>
   <div class="avatar-editor">
-    <div v-if="avatarUrl" class="avatar-editor__preview">
-      <img :src="avatarUrl" alt="预览" class="avatar-editor__img" />
+    <div
+      v-if="avatarUrl"
+      class="avatar-editor__preview"
+    >
+      <img
+        :src="avatarUrl"
+        alt="预览"
+        class="avatar-editor__img"
+      />
     </div>
     <ElUpload
       :show-file-list="false"
@@ -39,7 +46,11 @@ defineExpose({ getValue })
       class="avatar-editor__upload"
       @change="(uf: { raw?: File }) => handleChange(uf)"
     >
-      <ElButton size="small" type="primary">选择图片</ElButton>
+      <ElButton
+        size="small"
+        type="primary"
+        >选择图片</ElButton
+      >
     </ElUpload>
   </div>
 </template>

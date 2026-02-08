@@ -25,7 +25,10 @@ const projects: ProjectItem[] = [
 </script>
 
 <template>
-  <ElCard class="mb-4" shadow="never">
+  <ElCard
+    class="mb-4"
+    shadow="never"
+  >
     <template #header>
       <div class="flex items-center justify-between">
         <span>我的项目</span>
@@ -39,8 +42,16 @@ const projects: ProjectItem[] = [
               </ElDropdownMenu>
             </template>
           </ElDropdown>
-          <ElButton type="primary" size="small">+ 新建</ElButton>
-          <ElButton link type="primary">全部</ElButton>
+          <ElButton
+            type="primary"
+            size="small"
+            >+ 新建</ElButton
+          >
+          <ElButton
+            link
+            type="primary"
+            >全部</ElButton
+          >
         </div>
       </div>
     </template>
@@ -50,7 +61,10 @@ const projects: ProjectItem[] = [
         :key="p.id"
         class="flex items-center gap-3 border-b border-[var(--layout-tag-border)] py-2.5 last:border-b-0"
       >
-        <span class="h-8 w-8 shrink-0 rounded-md" :style="{ background: p.color }" />
+        <span
+          class="h-8 w-8 shrink-0 rounded-md"
+          :style="{ background: p.color }"
+        />
         <span class="text-sm text-[var(--app-text)]">{{ p.name }}</span>
       </li>
     </ul>

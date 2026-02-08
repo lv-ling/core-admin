@@ -35,7 +35,12 @@ function closeTag(fullPath: string, e: Event) {
           @click="goToTag(view.fullPath)"
         >
           <span class="tag-nav-title">{{ view.meta?.title ?? view.fullPath }}</span>
-          <span class="tag-nav-close" @click="closeTag(view.fullPath, $event)"> × </span>
+          <span
+            class="tag-nav-close"
+            @click="closeTag(view.fullPath, $event)"
+          >
+            ×
+          </span>
         </div>
       </div>
     </ElScrollbar>

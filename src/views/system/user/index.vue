@@ -177,7 +177,11 @@ context.value.componentParent = {
 <template>
   <PageWrap>
     <template #header>
-      <UserHeader :on-add="handleAdd" :on-validate-all="handleValidateAll" :on-save="handleSave" />
+      <UserHeader
+        :on-add="handleAdd"
+        :on-validate-all="handleValidateAll"
+        :on-save="handleSave"
+      />
     </template>
     <AgGridVue
       class="w-full h-full"
@@ -194,4 +198,3 @@ context.value.componentParent = {
     />
   </PageWrap>
 </template>
-

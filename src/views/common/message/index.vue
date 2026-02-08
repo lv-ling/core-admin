@@ -41,11 +41,10 @@ const defaultColDef = {
       <span>消息通知</span>
     </template>
     <AgGridVue
-        class="w-full h-full"
-        :column-defs="colDefs"
-        :row-data="rowData"
-        :default-col-def="defaultColDef"
-      />
+      class="w-full h-full"
+      :column-defs="colDefs"
+      :row-data="rowData"
+      :default-col-def="defaultColDef"
+    />
   </PageWrap>
 </template>
-

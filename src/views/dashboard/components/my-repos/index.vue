@@ -45,11 +45,18 @@ const repos: RepoItem[] = [
 </script>
 
 <template>
-  <ElCard class="mb-4" shadow="never">
+  <ElCard
+    class="mb-4"
+    shadow="never"
+  >
     <template #header>
       <div class="flex items-center justify-between">
         <span>我参与的代码库</span>
-        <ElButton link type="primary">全部</ElButton>
+        <ElButton
+          link
+          type="primary"
+          >全部</ElButton
+        >
       </div>
     </template>
     <ul class="m-0 list-none p-0">

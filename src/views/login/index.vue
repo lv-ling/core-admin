@@ -27,9 +27,7 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div
-    class="login-page min-h-screen flex items-stretch overflow-hidden bg-[var(--app-bg)]"
-  >
+  <div class="login-page min-h-screen flex items-stretch overflow-hidden bg-[var(--app-bg)]">
     <!-- 左侧品牌区 -->
     <div
       class="login-brand hidden lg:flex lg:w-[52%] flex-col justify-between p-12 relative overflow-hidden"
@@ -49,9 +47,7 @@ async function onSubmit() {
       </div>
 
       <div class="relative z-10 max-w-md">
-        <h1
-          class="text-3xl xl:text-4xl font-bold leading-tight text-[var(--app-text)] mb-4"
-        >
+        <h1 class="text-3xl xl:text-4xl font-bold leading-tight text-[var(--app-text)] mb-4">
           高效协作<br />从这里开始
         </h1>
         <p class="text-base text-[var(--el-text-color-secondary)] leading-relaxed">
@@ -72,9 +68,7 @@ async function onSubmit() {
     </div>
 
     <!-- 右侧登录表单区 -->
-    <div
-      class="login-form flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 relative"
-    >
+    <div class="login-form flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 relative">
       <div class="w-full max-w-[400px]">
         <!-- 移动端 Logo -->
         <div class="lg:hidden flex justify-center mb-8">
@@ -92,14 +86,8 @@ async function onSubmit() {
         </div>
 
         <div class="mb-8">
-          <h2
-            class="text-2xl font-bold text-[var(--app-text)] mb-2"
-          >
-            欢迎回来
-          </h2>
-          <p class="text-sm text-[var(--el-text-color-secondary)]">
-            请输入您的账号信息登录系统
-          </p>
+          <h2 class="text-2xl font-bold text-[var(--app-text)] mb-2">欢迎回来</h2>
+          <p class="text-sm text-[var(--el-text-color-secondary)]">请输入您的账号信息登录系统</p>
         </div>
 
         <ElForm
@@ -108,7 +96,10 @@ async function onSubmit() {
           size="large"
           class="login-form-el"
         >
-          <ElFormItem label="用户名" required>
+          <ElFormItem
+            label="用户名"
+            required
+          >
             <ElInput
               v-model="form.username"
               placeholder="请输入用户名"
@@ -117,7 +108,10 @@ async function onSubmit() {
               autocomplete
             />
           </ElFormItem>
-          <ElFormItem label="密码" required>
+          <ElFormItem
+            label="密码"
+            required
+          >
             <ElInput
               v-model="form.password"
               type="password"
@@ -130,9 +124,16 @@ async function onSubmit() {
           </ElFormItem>
           <div class="flex items-center justify-between mb-6">
             <ElFormItem class="!mb-0">
-              <ElCheckbox v-model="form.remember" label="记住我" />
+              <ElCheckbox
+                v-model="form.remember"
+                label="记住我"
+              />
             </ElFormItem>
-            <ElLink type="primary" :underline="false" class="text-sm">
+            <ElLink
+              type="primary"
+              :underline="false"
+              class="text-sm"
+            >
               忘记密码？
             </ElLink>
           </div>
@@ -159,15 +160,31 @@ async function onSubmit() {
 <style scoped>
 .login-brand-bg {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 12%, transparent) 0%, transparent 50%),
-    linear-gradient(225deg, color-mix(in srgb, var(--theme-primary) 8%, transparent) 0%, transparent 50%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--theme-primary) 12%, transparent) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      225deg,
+      color-mix(in srgb, var(--theme-primary) 8%, transparent) 0%,
+      transparent 50%
+    ),
     var(--app-bg);
 }
 
 html.dark .login-brand-bg {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--theme-primary) 15%, transparent) 0%, transparent 50%),
-    linear-gradient(225deg, color-mix(in srgb, var(--theme-primary) 10%, transparent) 0%, transparent 50%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--theme-primary) 15%, transparent) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      225deg,
+      color-mix(in srgb, var(--theme-primary) 10%, transparent) 0%,
+      transparent 50%
+    ),
     var(--app-bg);
 }
 
