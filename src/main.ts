@@ -9,19 +9,7 @@ import router from '@/router'
 import '@/styles/index.css'
 import App from './App.vue'
 import { applyStoredTheme } from '@/stores/theme'
-import {
-  AllCommunityModule,
-  ModuleRegistry,
-  provideGlobalGridOptions,
-  themeQuartz,
-} from 'ag-grid-community'
-import { AG_GRID_LOCALE_CN } from '@ag-grid-community/locale'
-
-ModuleRegistry.registerModules([AllCommunityModule])
-provideGlobalGridOptions({
-  theme: themeQuartz,
-  localeText: AG_GRID_LOCALE_CN,
-})
+import { setupAgGrid, setupHandsontable, setupVxeTable } from '@/plugins'
 
 applyStoredTheme()
 
@@ -29,4 +17,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+setupVxeTable(app)
+setupHandsontable(app)
+setupAgGrid(app)
 app.mount('#app')

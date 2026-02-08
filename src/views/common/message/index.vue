@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { ColDef } from 'ag-grid-community'
-import { AgGridVue } from 'ag-grid-vue3'
 import { PageWrap } from '@/components'
 
 interface IRow {

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { HotTable } from '@handsontable/vue3'
-import { registerAllModules } from 'handsontable/registry'
-import 'handsontable/styles/handsontable.min.css'
-import 'handsontable/styles/ht-theme-main.min.css'
+import type { HotTable } from '@handsontable/vue3'
 import { ElMessage } from 'element-plus'
 import { PageWrap } from '@/components'
 import { RoleHeader } from './components'
@@ -11,8 +8,6 @@ import { COL_HEADERS, getColumns } from './columns'
 import type { IRoleSearchForm } from './form-items'
 import type { IRole } from './types'
 import { getRowValidationErrors } from './utils'
-
-registerAllModules()
 
 const hotTableRef = ref<InstanceType<typeof HotTable> | null>(null)
 const roles = ref<IRole[]>([

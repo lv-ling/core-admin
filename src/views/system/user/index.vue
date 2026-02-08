@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { GridApi, GridReadyEvent, IRowNode } from 'ag-grid-community'
-import { AgGridVue } from 'ag-grid-vue3'
 import { ElMessage } from 'element-plus'
 import { PageWrap } from '@/components'
 import {
