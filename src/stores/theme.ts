@@ -17,18 +17,24 @@ function applyTheme(color: string) {
   document.documentElement.style.setProperty('--theme-primary', color)
 }
 
-function applyDarkMode(isDark: boolean) {
-  if (isDark) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+function applyLightMode() {
+  document.documentElement.classList.remove('dark')
+  document.documentElement.dataset.agThemeMode = 'light'
+}
+
+function applyDarkMode() {
+  document.documentElement.classList.add('dark')
+  document.documentElement.dataset.agThemeMode = 'dark'
 }
 
 /** 仅根据 localStorage 应用主题与深色模式，用于应用启动时（不依赖 Pinia） */
 export function applyStoredTheme() {
   applyTheme(getStoredTheme())
-  applyDarkMode(getStoredDark())
+  if (getStoredDark()) {
+    applyDarkMode()
+  } else {
+    applyLightMode()
+  }
 }
 
 export const useThemeStore = defineStore('theme', () => {
@@ -47,7 +53,11 @@ export const useThemeStore = defineStore('theme', () => {
   watch(
     isDark,
     (dark) => {
-      applyDarkMode(dark)
+      if (dark) {
+        applyDarkMode()
+      } else {
+        applyLightMode()
+      }
       localStorage.setItem(MODE_KEY, dark ? 'dark' : 'light')
     },
     { immediate: false }

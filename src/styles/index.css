@@ -1,9 +1,40 @@
+/* Preflight / 初始化样式（类 Tailwind 风格，与 Element Plus 兼容） */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 继承字体、字号到表单元素 */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* 媒体元素默认块级、响应式 */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 去除 a 标签默认下划线（按需可删） */
+a {
+  text-decoration: none;
+}
+
 /* 全局样式、主题变量 */
 
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family:
     system-ui,
     -apple-system,

@@ -67,9 +67,10 @@ watch(
   flex: 1;
   min-height: 0;
   padding: 0;
-  overflow-y: auto;
 }
 .main-content__inner {
-  padding: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

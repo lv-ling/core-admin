@@ -9,6 +9,19 @@ import router from '@/router'
 import '@/styles/index.css'
 import App from './App.vue'
 import { applyStoredTheme } from '@/stores/theme'
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  provideGlobalGridOptions,
+  themeQuartz,
+} from 'ag-grid-community'
+import { AG_GRID_LOCALE_CN } from '@ag-grid-community/locale'
+
+ModuleRegistry.registerModules([AllCommunityModule])
+provideGlobalGridOptions({
+  theme: themeQuartz,
+  localeText: AG_GRID_LOCALE_CN,
+})
 
 applyStoredTheme()
 
