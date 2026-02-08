@@ -6,8 +6,3 @@ export interface IUser {
   email: string
   status: 'active' | 'inactive'
 }
-
-export interface IUserRowErrors {
-  age?: string
-  email?: string
-}

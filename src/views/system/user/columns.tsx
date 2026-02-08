@@ -1,7 +1,6 @@
-import type { Ref } from 'vue'
 import type { ColDef } from 'ag-grid-community'
-import type { IUser, IUserRowErrors } from './types'
-import { validateAge } from './utils'
+import type { IUser } from './types'
+import { validateAge, validateStatus } from './utils'
 
 /**
  * ColDef 列定义 - 所有属性与用法说明
@@ -136,8 +135,13 @@ export const defaultColDef: ColDef<IUser> = {
   filter: true, // 允许列筛选
 }
 
-/** 列定义，使用 AG Grid 内置 getValidationErrors 校验，rowErrorsRef 用于「校验/校验全部」后的单元格高亮和 tooltip */
-export function getColDefs(rowErrorsRef: Ref<Map<string, IUserRowErrors>>): ColDef<IUser>[] {
+/**
+ * 列定义 - 使用 AG Grid 内置校验
+ * @see https://www.ag-grid.com/vue-data-grid/cell-editing-validation/
+ * - 年龄/邮箱：cellEditorParams.getValidationErrors 返回错误时，Grid 在编辑器中显示 tooltip 并 revert/block
+ * - 自定义 Editor（EmailCellEditor）实现 getValidationErrors + getValidationElement 即可参与校验
+ */
+export function getColDefs(): ColDef<IUser>[] {
   return [
     {
       field: 'username',
@@ -174,12 +178,6 @@ export function getColDefs(rowErrorsRef: Ref<Map<string, IUserRowErrors>>): ColD
         const n = Number(v)
         return Number.isNaN(n) ? null : Math.min(150, Math.max(0, Math.floor(n)))
       },
-      cellClassRules: {
-        'cell-has-error': (params) =>
-          !!(params.data?.id && rowErrorsRef.value.get(params.data.id)?.age),
-      },
-      tooltipValueGetter: (params) =>
-        params.data?.id ? rowErrorsRef.value.get(params.data.id)?.age ?? undefined : undefined,
     },
     {
       field: 'email',
@@ -187,12 +185,6 @@ export function getColDefs(rowErrorsRef: Ref<Map<string, IUserRowErrors>>): ColD
       width: 200,
       editable: true,
       cellEditor: 'EmailCellEditor',
-      cellClassRules: {
-        'cell-has-error': (params) =>
-          !!(params.data?.id && rowErrorsRef.value.get(params.data.id)?.email),
-      },
-      tooltipValueGetter: (params) =>
-        params.data?.id ? rowErrorsRef.value.get(params.data.id)?.email ?? undefined : undefined,
     },
     {
       field: 'status',
@@ -200,7 +192,13 @@ export function getColDefs(rowErrorsRef: Ref<Map<string, IUserRowErrors>>): ColD
       width: 100,
       editable: true,
       cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['active', 'inactive'] },
+      cellEditorParams: {
+        values: ['active', 'inactive','error'],
+        getValidationErrors: (params: { value: unknown }) => {
+          const err = validateStatus(params.value)
+          return err ? [err] : null
+        },
+      },
     },
     {
       headerName: '操作',

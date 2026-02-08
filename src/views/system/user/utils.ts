@@ -18,6 +18,18 @@ export function validateAge(value: unknown): string | undefined {
   return undefined
 }
 
+const VALID_STATUS = ['active', 'inactive'] as const
+
+export function validateStatus(value: unknown): string | undefined {
+  if (value === null || value === undefined || value === '') {
+    return '状态不能为空'
+  }
+  if (!VALID_STATUS.includes(value as (typeof VALID_STATUS)[number])) {
+    return '状态必须为 active 或 inactive'
+  }
+  return undefined
+}
+
 export function validateEmail(value: unknown): string | undefined {
   const s = typeof value === 'string' ? value : String(value ?? '')
   if (!s.trim()) {
