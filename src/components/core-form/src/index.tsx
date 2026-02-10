@@ -1,4 +1,4 @@
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h, ref, watch } from 'vue'
 import type { VNodeChild } from 'vue'
 import { ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 import { componentMap } from './component-map'
@@ -14,6 +14,8 @@ const CoreForm = defineComponent({
     const props = rawProps as Readonly<CoreFormProps>
     // 使用 ref 包裹外部传入的 model，初始值来自 props.model
     const formModel = ref<Record<string, unknown>>(props.model ?? {})
+    // 内部维护一份可变的 schemas，支持通过暴露的 API 动态更新
+    const innerSchemas = ref<CoreFormSchema[]>(props.schemas ?? [])
 
     const formRef = ref<InstanceType<typeof ElForm> | null>(null)
 
@@ -30,6 +32,13 @@ const CoreForm = defineComponent({
           return true
         } catch {
           return false
+        }
+      },
+      updateSchema(next) {
+        if (typeof next === 'function') {
+          innerSchemas.value = next(innerSchemas.value)
+        } else {
+          innerSchemas.value = next
         }
       },
       resetFields(props) {
@@ -60,7 +69,7 @@ const CoreForm = defineComponent({
     emit('register', api)
 
     return () => {
-      const { schemas, colSpan, ...restFormProps } = props
+      const { colSpan, gutter, ...restFormProps } = props
       // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
       const baseSpan = colSpan && colSpan > 0 ? Math.min(colSpan, 24) : 24
 
@@ -70,8 +79,8 @@ const CoreForm = defineComponent({
           model={formModel.value}
           {...restFormProps}
         >
-          <ElRow gutter={16}>
-            {schemas.map((schema: CoreFormSchema, index: number) => {
+          <ElRow gutter={gutter}>
+            {innerSchemas.value.map((schema: CoreFormSchema, index: number) => {
               const prop = schema.prop
               let propArray: unknown[] = []
               if (Array.isArray(prop)) {

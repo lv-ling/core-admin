@@ -39,18 +39,29 @@ export interface CoreFormSchema {
 }
 
 export interface CoreFormExpose {
+  /** 表单整体校验 */
   validate: () => Promise<boolean>
+  /** 校验单个字段 */
   validateField: (field: string) => Promise<boolean>
+  /** 替换或基于旧值更新 schemas，实现动态增删改表单项 */
+  updateSchema: (next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) => void
+  /** 重置字段值与校验状态 */
   resetFields: (props?: Arrayable<FormItemProp> | undefined) => void
+  /** 滚动到指定字段 */
   scrollToField: (prop: FormItemProp) => void
+  /** 清除校验结果 */
   clearValidate: (props?: Arrayable<FormItemProp> | undefined) => void
+  /** 访问内部的 ElFormItem 列表 */
   fields: () => FormItemContext[]
+  /** 通过 prop 获取单个 ElFormItem */
   getField: (prop: FormItemProp) => FormItemContext | undefined
+  /** 设置初始值（会 merge 进当前 model） */
   setInitialValues: (initModel: Record<string, unknown>) => void
 }
 
 export type CoreFormProps = FormProps & {
   schemas: CoreFormSchema[]
+  gutter?: number
   /** 一行展示多少列（自动换算为 24 栅格），优先级低于 schema.colSpan */
   colSpan?: number
 }

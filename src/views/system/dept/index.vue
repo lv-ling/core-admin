@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CoreForm, PageWrap } from '@/components'
+import { CoreForm, PageWrap, useCoreForm } from '@/components'
 import { useDeptPage } from './useDeptPage'
 import { getDeptSearchFormSchemas, getDeptEditFormSchemas } from './form-items'
 
@@ -8,7 +8,6 @@ const {
   searchForm,
   dialogVisible,
   dialogTitle,
-  editForm,
   deptColumns,
   deptEditRules,
   editConfig,
@@ -25,6 +24,8 @@ const {
   handleSaveAll,
   handleDialogClose,
 } = useDeptPage()
+
+const [registerCoreForm] = useCoreForm(getDeptEditFormSchemas())
 </script>
 
 <template>
@@ -115,12 +116,7 @@ const {
       destroy-on-close
       @close="handleDialogClose"
     >
-      <CoreForm
-        :model="editForm"
-        :schemas="getDeptEditFormSchemas()"
-        label-width="90px"
-        :col-span="8"
-      >
+      <CoreForm @register="registerCoreForm">
         <template #parentId="{ model }">
           <ElFormItem
             label="上级部门"

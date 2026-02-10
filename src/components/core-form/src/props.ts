@@ -5,12 +5,12 @@ export const coreFormProps = {
   /** 表单模型，必须为对象 */
   model: {
     type: Object as PropType<CoreFormProps['model']>,
-    required: true,
+    default: () => ({}),
   },
   /** 表单项配置列表 */
   schemas: {
     type: Array as PropType<CoreFormSchema[]>,
-    required: true,
+    default: () => [],
   },
   /**
    * 每个表单项占用的栅格宽度（1-24）
@@ -22,6 +22,14 @@ export const coreFormProps = {
   colSpan: {
     type: Number as PropType<number>,
     default: 6,
+  },
+  /**
+   * 行间距（左右 gutter，单位 px）
+   * 等价于 ElRow 的 gutter，默认 16
+   */
+  gutter: {
+    type: Number as PropType<number>,
+    default: 16,
   },
   /** 标签宽度，默认 90px，等价于 ElForm 的 label-width */
   labelWidth: {

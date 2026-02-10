@@ -9,9 +9,16 @@ export interface CoreFormMethods {
   updateSchema: (next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) => void
   /** 代理 CoreForm / ElForm 的校验方法 */
   validate: () => Promise<boolean>
+  validateField: (field: string) => Promise<boolean>
   resetFields: () => void
   clearValidate: (props?: string | string[]) => void
   scrollToField: (prop: string) => void
+  /** 直接访问内部的 ElFormItem 列表 */
+  fields: CoreFormExpose['fields']
+  /** 通过 prop 获取单个 ElFormItem */
+  getField: CoreFormExpose['getField']
+  /** 设置初始值（会 merge 进当前 model） */
+  setInitialValues: CoreFormExpose['setInitialValues']
 }
 
 export function useCoreForm(initialSchemas: CoreFormSchema[] = [] as CoreFormSchema[]) {
@@ -20,19 +27,28 @@ export function useCoreForm(initialSchemas: CoreFormSchema[] = [] as CoreFormSch
 
   function register(api: CoreFormExpose) {
     formApiRef.value = api
+    // 初次注册时，将当前 schemas 同步到 CoreForm 内部
+    if (schemas.value?.length) {
+      api.updateSchema(schemas.value)
+    }
   }
 
   function updateSchema(next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) {
     if (typeof next === 'function') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      schemas.value = (next as any)(schemas.value)
+      schemas.value = next(schemas.value)
     } else {
       schemas.value = next
     }
+    // 同步更新到 CoreForm 内部
+    formApiRef.value?.updateSchema(schemas.value)
   }
 
   async function validate() {
     return (await formApiRef.value?.validate()) ?? false
+  }
+
+  async function validateField(field: string) {
+    return (await formApiRef.value?.validateField(field)) ?? false
   }
 
   function resetFields() {
@@ -47,13 +63,29 @@ export function useCoreForm(initialSchemas: CoreFormSchema[] = [] as CoreFormSch
     formApiRef.value?.scrollToField(prop)
   }
 
+  const fields: CoreFormExpose['fields'] = () => {
+    return formApiRef.value?.fields() ?? []
+  }
+
+  const getField: CoreFormExpose['getField'] = (prop) => {
+    return formApiRef.value?.getField(prop)
+  }
+
+  const setInitialValues: CoreFormExpose['setInitialValues'] = (initModel) => {
+    formApiRef.value?.setInitialValues(initModel)
+  }
+
   const methods: CoreFormMethods = {
     schemas,
     updateSchema,
     validate,
+    validateField,
     resetFields,
     clearValidate,
     scrollToField,
+    fields,
+    getField,
+    setInitialValues,
   }
 
   return [register, methods] as const
