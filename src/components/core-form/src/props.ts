@@ -46,4 +46,9 @@ export const coreFormProps = {
     type: Boolean as PropType<CoreFormProps['inline']>,
     default: false,
   },
+  /** 是否为搜索表单，自动在末尾追加查询 / 重置按钮 */
+  isSearch: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
 } as const

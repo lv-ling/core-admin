@@ -1,6 +1,6 @@
 import { defineComponent, h, ref } from 'vue'
 import type { VNodeChild } from 'vue'
-import { ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
+import { ElButton, ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 import { componentMap } from './component-map'
 import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './type'
 import { coreFormProps } from './props'
@@ -8,7 +8,7 @@ import { coreFormProps } from './props'
 const CoreForm = defineComponent({
   name: 'CoreForm',
   props: coreFormProps,
-  emits: ['register'],
+  emits: ['register', 'search', 'reset'],
   setup(rawProps, { emit, slots }) {
     // 将运行时 props 断言为 CoreFormProps，辅助类型推断
     const props = rawProps as Readonly<CoreFormProps>
@@ -16,6 +16,8 @@ const CoreForm = defineComponent({
     const formModel = ref<Record<string, unknown>>({})
     // 内部维护一份可变的 schemas，支持通过暴露的 API 动态更新
     const innerSchemas = ref<CoreFormSchema[]>(props.schemas ?? [])
+    // 内部维护一份可变的表单 props（除 model 外），默认拷贝自组件 props
+    const innerProps = ref<CoreFormProps>({ ...props })
 
     const formRef = ref<InstanceType<typeof ElForm> | null>(null)
 
@@ -40,6 +42,8 @@ const CoreForm = defineComponent({
         } else {
           innerSchemas.value = next
         }
+        // 同步到内部 props，方便需要时读取
+        innerProps.value.schemas = innerSchemas.value
       },
       resetFields(props) {
         // resetFields 支持可选的 props 参数
@@ -71,12 +75,26 @@ const CoreForm = defineComponent({
         if (!values) return
         Object.assign(formModel.value, values)
       },
+      setProps(nextProps) {
+        if (!nextProps) return
+        const mutable = { ...nextProps } as Partial<CoreFormProps>
+        if (mutable.schemas) {
+          innerSchemas.value = mutable.schemas
+          innerProps.value.schemas = mutable.schemas
+          delete mutable.schemas
+        }
+        innerProps.value = {
+          ...innerProps.value,
+          ...(mutable as Partial<CoreFormProps>),
+        }
+      },
     }
 
     emit('register', api)
 
     return () => {
-      const { colSpan, gutter, ...restFormProps } = props
+      const currentProps = innerProps.value
+      const { colSpan, gutter, isSearch, ...restFormProps } = currentProps
       // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
       const baseSpan = colSpan && colSpan > 0 ? Math.min(colSpan, 24) : 24
 
@@ -159,6 +177,27 @@ const CoreForm = defineComponent({
                 </ElCol>
               )
             })}
+            {isSearch && (
+              <ElCol
+                key="__core_form_search_actions"
+                span={baseSpan}
+              >
+                <ElFormItem style={{ width: '100%' }}>
+                  <ElButton
+                    type="primary"
+                    onClick={() => emit('search')}
+                  >
+                    查询
+                  </ElButton>
+                  <ElButton
+                    class="ml-2"
+                    onClick={() => emit('reset')}
+                  >
+                    重置
+                  </ElButton>
+                </ElFormItem>
+              </ElCol>
+            )}
           </ElRow>
         </ElForm>
       )

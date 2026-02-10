@@ -61,6 +61,8 @@ export interface CoreFormExpose {
   getValues: () => Record<string, unknown>
   /** 设置表单值（会 merge 到当前 model） */
   setValues: (values: Record<string, unknown>) => void
+  /** 更新 CoreForm / ElForm 的 props（除 model 外） */
+  setProps: (props: Partial<CoreFormProps>) => void
 }
 
 export type CoreFormProps = Omit<FormProps, 'model'> & {
@@ -70,4 +72,6 @@ export type CoreFormProps = Omit<FormProps, 'model'> & {
   gutter?: number
   /** 一行展示多少列（自动换算为 24 栅格），优先级低于 schema.colSpan */
   colSpan?: number
+  /** 是否为搜索表单，自动追加「查询 / 重置」按钮 */
+  isSearch?: boolean
 }

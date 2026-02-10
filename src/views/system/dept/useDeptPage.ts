@@ -75,7 +75,7 @@ export function useDeptPage() {
 
   const parentOptions = computed(() => {
     const options: { id: string; parentId: string | null; name: string }[] = [
-      { id: '', parentId: null, name: '根部门（顶级）' },
+      { id: 'Root', parentId: null, name: '根部门（顶级）' },
     ]
     const list = tableData.value
     const excludeIds = new Set<string>()

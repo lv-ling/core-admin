@@ -33,6 +33,16 @@ export function getDeptEditFormSchemas(): CoreFormSchema[] {
       rules: [{ required: true, message: '请输入部门名称' }],
     },
     {
+      prop: 'parentId',
+      label: '上级部门',
+      component: 'ElSelect',
+      props: {
+        placeholder: '请选择上级部门',
+        clearable: true,
+      },
+      rules: [{ required: true, message: '请选择上级部门' }],
+    },
+    {
       prop: 'type',
       label: '类型',
       component: 'ElSelect',
@@ -129,7 +139,6 @@ export function getDeptSearchFormSchemas(): CoreFormSchema[] {
       props: {
         placeholder: '请输入部门名称',
         clearable: true,
-        // class: 'w-40',
       },
     },
     {
@@ -139,7 +148,6 @@ export function getDeptSearchFormSchemas(): CoreFormSchema[] {
       props: {
         placeholder: '请输入部门编码',
         clearable: true,
-        // class: 'w-40',
       },
     },
     {
@@ -155,11 +163,6 @@ export function getDeptSearchFormSchemas(): CoreFormSchema[] {
           { label: '禁用', value: 'disabled' },
         ],
       },
-    },
-    {
-      prop: 'operation',
-      label: '',
-      component: 'ElInput',
     },
   ]
 }

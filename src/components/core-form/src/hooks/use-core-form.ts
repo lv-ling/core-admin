@@ -5,6 +5,10 @@ import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from '../type'
 export interface UseCoreFormOptions extends Partial<CoreFormProps> {
   /** 表单项配置列表 */
   schemas?: CoreFormSchema[]
+  /** 搜索按钮点击事件（仅 isSearch 为 true 时生效） */
+  onSearch?: () => void
+  /** 重置按钮点击事件（仅 isSearch 为 true 时生效） */
+  onReset?: () => void
 }
 
 export interface CoreFormMethods {
@@ -32,26 +36,20 @@ export interface CoreFormMethods {
   setValues: CoreFormExpose['setValues']
 }
 
-export function useCoreForm(initialOptions: UseCoreFormOptions | CoreFormSchema[] = {}) {
+export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
   const formApiRef = ref<CoreFormExpose | null>(null)
-  // 兼容两种调用方式：
-  // 1) useCoreForm([{ ...schema }])
-  // 2) useCoreForm({ schemas, colSpan, gutter, ... })
-  const normalized: UseCoreFormOptions = Array.isArray(initialOptions)
-    ? { schemas: initialOptions }
-    : initialOptions || {}
-
   // 拆分出初始 schemas，剩余部分作为 CoreForm / ElForm 的配置
-  const { schemas: initialSchemas, ...restOptions } = normalized
+  const { schemas: initialSchemas, ...restOptions } = initialOptions
   const schemas = ref<CoreFormSchema[]>(initialSchemas ?? [])
   const formProps = ref<UseCoreFormOptions>(restOptions)
 
   function register(api: CoreFormExpose) {
     formApiRef.value = api
-    // 初次注册时，将当前 schemas 同步到 CoreForm 内部
-    if (schemas.value?.length) {
-      api.updateSchema(schemas.value)
-    }
+    // 初次注册时，将 useCoreForm 收到的所有配置（props + schemas）同步给 CoreForm
+    api.setProps({
+      ...(formProps.value as Partial<CoreFormProps>),
+      schemas: schemas.value,
+    })
   }
 
   function updateSchema(next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) {

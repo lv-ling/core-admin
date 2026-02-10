@@ -4,6 +4,7 @@ import { useDeptPage } from './useDeptPage'
 import { getDeptSearchFormSchemas, getDeptEditFormSchemas } from './form-items'
 
 const {
+  gridRef,
   loading,
   dialogVisible,
   dialogTitle,
@@ -24,9 +25,15 @@ const {
   handleDialogClose,
 } = useDeptPage()
 
-const [registerSearchForm] = useCoreForm(getDeptSearchFormSchemas())
+const [registerSearchForm] = useCoreForm({
+  schemas: getDeptSearchFormSchemas(),
+  inline: true,
+  isSearch: true,
+})
 
-const [registerCoreForm] = useCoreForm(getDeptEditFormSchemas())
+const [registerCoreForm] = useCoreForm({
+  schemas: getDeptEditFormSchemas(),
+})
 </script>
 
 <template>
@@ -115,24 +122,19 @@ const [registerCoreForm] = useCoreForm(getDeptEditFormSchemas())
     >
       <CoreForm @register="registerCoreForm">
         <template #parentId="{ model }">
-          <ElFormItem
-            label="上级部门"
-            prop="parentId"
+          <ElSelect
+            v-model="model.parentId"
+            placeholder="根部门（顶级）"
+            clearable
+            class="w-full"
           >
-            <ElSelect
-              v-model="model.parentId"
-              placeholder="根部门（顶级）"
-              clearable
-              class="w-full"
-            >
-              <ElOption
-                v-for="opt in parentOptions"
-                :key="opt.id || 'root'"
-                :label="opt.name"
-                :value="opt.id || null"
-              />
-            </ElSelect>
-          </ElFormItem>
+            <ElOption
+              v-for="opt in parentOptions"
+              :key="opt.id || 'root'"
+              :label="opt.name"
+              :value="opt.id || null"
+            />
+          </ElSelect>
         </template>
       </CoreForm>
       <template #footer>
