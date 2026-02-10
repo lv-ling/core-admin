@@ -6,7 +6,7 @@ export interface UseCoreFormOptions extends Partial<CoreFormProps> {
   /** 表单项配置列表 */
   schemas?: CoreFormSchema[]
   /** 搜索按钮点击事件（仅 isSearch 为 true 时生效） */
-  onSearch?: () => void
+  onSearch?: (model: Record<string, unknown>) => void
   /** 重置按钮点击事件（仅 isSearch 为 true 时生效） */
   onReset?: () => void
 }
@@ -24,6 +24,8 @@ export interface CoreFormMethods {
   resetFields: () => void
   clearValidate: (props?: string | string[]) => void
   scrollToField: (prop: string) => void
+  /** 更新 Core Form / ElForm 的 props（除 schemas 外） */
+  setProps: (props: Partial<CoreFormProps>) => void
   /** 直接访问内部的 ElFormItem 列表 */
   fields: CoreFormExpose['fields']
   /** 通过 prop 获取单个 ElFormItem */
@@ -45,11 +47,13 @@ export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
 
   function register(api: CoreFormExpose) {
     formApiRef.value = api
-    // 初次注册时，将 useCoreForm 收到的所有配置（props + schemas）同步给 CoreForm
-    api.setProps({
-      ...(formProps.value as Partial<CoreFormProps>),
-      schemas: schemas.value,
-    })
+    // 初次注册时：
+    // 1) 先更新 CoreForm 的 props（不含 schemas）
+    api.setProps(formProps.value as Partial<CoreFormProps>)
+    // 2) 再同步 schemas 到 CoreForm 内部
+    if (schemas.value?.length) {
+      api.updateSchema(schemas.value)
+    }
   }
 
   function updateSchema(next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) {
@@ -102,6 +106,10 @@ export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
     formApiRef.value?.setValues(values)
   }
 
+  const setProps: CoreFormExpose['setProps'] = (props) => {
+    formApiRef.value?.setProps(props)
+  }
+
   const methods: CoreFormMethods = {
     schemas,
     formProps,
@@ -116,6 +124,7 @@ export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
     setInitialValues,
     getValues,
     setValues,
+    setProps,
   }
 
   return [register, methods] as const

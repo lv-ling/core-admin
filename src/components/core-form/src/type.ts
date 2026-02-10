@@ -74,4 +74,8 @@ export type CoreFormProps = Omit<FormProps, 'model'> & {
   colSpan?: number
   /** 是否为搜索表单，自动追加「查询 / 重置」按钮 */
   isSearch?: boolean
+  /** 搜索按钮点击回调（仅 isSearch 为 true 时生效） */
+  onSearch?: (model: Record<string, unknown>) => void
+  /** 重置按钮点击回调（仅 isSearch 为 true 时生效） */
+  onReset?: () => void
 }

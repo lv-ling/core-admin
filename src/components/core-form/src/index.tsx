@@ -9,9 +9,7 @@ const CoreForm = defineComponent({
   name: 'CoreForm',
   props: coreFormProps,
   emits: ['register', 'search', 'reset'],
-  setup(rawProps, { emit, slots }) {
-    // 将运行时 props 断言为 CoreFormProps，辅助类型推断
-    const props = rawProps as Readonly<CoreFormProps>
+  setup(props, { emit, slots }) {
     // 内部表单值，默认空对象；不再直接依赖外部 model 引用
     const formModel = ref<Record<string, unknown>>({})
     // 内部维护一份可变的 schemas，支持通过暴露的 API 动态更新
@@ -77,15 +75,13 @@ const CoreForm = defineComponent({
       },
       setProps(nextProps) {
         if (!nextProps) return
-        const mutable = { ...nextProps } as Partial<CoreFormProps>
-        if (mutable.schemas) {
-          innerSchemas.value = mutable.schemas
-          innerProps.value.schemas = mutable.schemas
-          delete mutable.schemas
-        }
+        // 这里只更新除 schemas 以外的 props；schemas 仍由 updateSchema 负责
+        const rest = { ...nextProps }
+        // 显式移除 schemas，避免与 updateSchema 的职责冲突
+        delete rest.schemas
         innerProps.value = {
           ...innerProps.value,
-          ...(mutable as Partial<CoreFormProps>),
+          ...rest,
         }
       },
     }
@@ -94,9 +90,19 @@ const CoreForm = defineComponent({
 
     return () => {
       const currentProps = innerProps.value
-      const { colSpan, gutter, isSearch, ...restFormProps } = currentProps
+      const { colSpan, gutter, isSearch, onSearch, onReset, ...restFormProps } = currentProps
       // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
       const baseSpan = colSpan && colSpan > 0 ? Math.min(colSpan, 24) : 24
+      const handleSearch = () => {
+        const snapshot = { ...formModel.value }
+        onSearch?.(snapshot)
+        emit('search', snapshot)
+      }
+      const handleReset = () => {
+        onReset?.()
+        formRef.value?.resetFields()
+        emit('reset')
+      }
 
       return (
         <ElForm
@@ -185,13 +191,13 @@ const CoreForm = defineComponent({
                 <ElFormItem style={{ width: '100%' }}>
                   <ElButton
                     type="primary"
-                    onClick={() => emit('search')}
+                    onClick={handleSearch}
                   >
                     查询
                   </ElButton>
                   <ElButton
                     class="ml-2"
-                    onClick={() => emit('reset')}
+                    onClick={handleReset}
                   >
                     重置
                   </ElButton>

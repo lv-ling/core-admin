@@ -120,7 +120,8 @@ export function useDeptPage() {
     }
   }
 
-  function handleSearch() {
+  function handleSearch(model: Record<string, unknown>) {
+    console.log('handleSearch', model)
     ElMessage.success('已按条件筛选')
   }
 

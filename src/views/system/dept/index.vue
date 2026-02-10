@@ -29,6 +29,8 @@ const [registerSearchForm] = useCoreForm({
   schemas: getDeptSearchFormSchemas(),
   inline: true,
   isSearch: true,
+  onSearch: (model) => handleSearch(model),
+  onReset: () => handleReset(),
 })
 
 const [registerCoreForm] = useCoreForm({
@@ -71,17 +73,7 @@ const [registerCoreForm] = useCoreForm({
           </div>
         </template>
         <template #form>
-          <CoreForm @register="registerSearchForm">
-            <template #operation>
-              <ElButton
-                type="primary"
-                @click="handleSearch"
-              >
-                搜索
-              </ElButton>
-              <ElButton @click="handleReset">重置</ElButton>
-            </template>
-          </CoreForm>
+          <CoreForm @register="registerSearchForm" />
         </template>
 
         <template #operation="{ row }">
