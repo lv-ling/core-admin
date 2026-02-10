@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { CoreFormSchema, CoreFormProps } from './type'
+import type { CoreFormSchema, CoreFormProps } from './types'
 
 export const coreFormProps = {
   /** 表单项配置列表 */

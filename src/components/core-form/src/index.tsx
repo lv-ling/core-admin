@@ -2,7 +2,7 @@ import { defineComponent, h, ref } from 'vue'
 import type { VNodeChild } from 'vue'
 import { ElButton, ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 import { componentMap } from './component-map'
-import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './type'
+import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './types'
 import { coreFormProps } from './props'
 
 const CoreForm = defineComponent({

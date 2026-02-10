@@ -1,42 +1,11 @@
 import { ref } from 'vue'
-import type { Ref } from 'vue'
-import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from '../type'
-
-export interface UseCoreFormOptions extends Partial<CoreFormProps> {
-  /** 表单项配置列表 */
-  schemas?: CoreFormSchema[]
-  /** 搜索按钮点击事件（仅 isSearch 为 true 时生效） */
-  onSearch?: (model: Record<string, unknown>) => void
-  /** 重置按钮点击事件（仅 isSearch 为 true 时生效） */
-  onReset?: () => void
-}
-
-export interface CoreFormMethods {
-  /** 当前 schemas（用于传给 CoreForm 的 :schemas） */
-  schemas: Ref<CoreFormSchema[]>
-  /** CoreForm / ElForm 的配置（除 schemas 外的所有 props），可直接 v-bind 到 CoreForm 上 */
-  formProps: Ref<UseCoreFormOptions>
-  /** 替换或基于旧值更新 schemas，实现动态增删改表单项 */
-  updateSchema: (next: CoreFormSchema[] | ((prev: CoreFormSchema[]) => CoreFormSchema[])) => void
-  /** 代理 CoreForm / ElForm 的校验方法 */
-  validate: () => Promise<boolean>
-  validateField: (field: string) => Promise<boolean>
-  resetFields: () => void
-  clearValidate: (props?: string | string[]) => void
-  scrollToField: (prop: string) => void
-  /** 更新 Core Form / ElForm 的 props（除 schemas 外） */
-  setProps: (props: Partial<CoreFormProps>) => void
-  /** 直接访问内部的 ElFormItem 列表 */
-  fields: CoreFormExpose['fields']
-  /** 通过 prop 获取单个 ElFormItem */
-  getField: CoreFormExpose['getField']
-  /** 设置初始值（会 merge 进当前 model） */
-  setInitialValues: CoreFormExpose['setInitialValues']
-  /** 获取当前表单值（浅拷贝） */
-  getValues: CoreFormExpose['getValues']
-  /** 设置表单值（会 merge 到当前 model） */
-  setValues: CoreFormExpose['setValues']
-}
+import type {
+  CoreFormSchema,
+  CoreFormExpose,
+  CoreFormProps,
+  UseCoreFormOptions,
+  CoreFormMethods,
+} from './types'
 
 export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
   const formApiRef = ref<CoreFormExpose | null>(null)
