@@ -1,5 +1,5 @@
 // 核心导出：组件 + Hook + 类型
-export { default as CoreForm } from './src'
+export { default as CoreForm } from './src/coreForm'
 
 export * from './src/useCoreForm'
 

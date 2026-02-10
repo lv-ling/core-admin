@@ -21,18 +21,20 @@ export function renderSearchActions({
       span={span}
     >
       <ElFormItem style={{ width: '100%' }}>
-        <ElButton
-          type="primary"
-          onClick={onSearch}
-        >
-          查询
-        </ElButton>
-        <ElButton
-          class="ml-2"
-          onClick={onReset}
-        >
-          重置
-        </ElButton>
+        <div class="w-full flex items-center justify-end">
+          <ElButton
+            class="ml-2"
+            onClick={onReset}
+          >
+            重置
+          </ElButton>
+          <ElButton
+            type="primary"
+            onClick={onSearch}
+          >
+            查询
+          </ElButton>
+        </div>
       </ElFormItem>
     </ElCol>
   )

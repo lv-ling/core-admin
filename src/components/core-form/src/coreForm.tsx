@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { ElButton, ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
+import { ElForm, ElRow } from 'element-plus'
 import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './types'
 import { coreFormProps } from './props'
 import { useFormModel } from './hooks/useFormModel'
@@ -7,6 +7,8 @@ import { useSchemas } from './hooks/useSchemas'
 import { useFormProps } from './hooks/useFormProps'
 import { calcBaseSpan } from './utils/layout'
 import { renderField } from './renderers/renderField'
+import { renderFormItem } from './renderers/renderFormItem'
+import { renderSearchActions } from './renderers/renderSearchActions'
 
 const CoreForm = defineComponent({
   name: 'CoreForm',
@@ -97,54 +99,20 @@ const CoreForm = defineComponent({
               })
               const span = schema.colSpan && schema.colSpan > 0 ? schema.colSpan : baseSpan
 
-              return (
-                <ElCol
-                  key={String(schema.prop ?? fieldKey ?? index)}
-                  span={span}
-                >
-                  <ElFormItem
-                    style={{ width: '100%' }}
-                    label={schema.label}
-                    prop={schema.prop}
-                    rules={schema.rules}
-                    labelWidth={schema.labelWidth}
-                    labelPosition={schema.labelPosition}
-                    required={schema.required}
-                    error={schema.error}
-                    showMessage={schema.showMessage}
-                    inlineMessage={schema.inlineMessage}
-                    size={schema.size}
-                    for={schema.for}
-                    validateStatus={
-                      schema.validateStatus === 'warning' ? 'error' : schema.validateStatus
-                    }
-                  >
-                    {content}
-                  </ElFormItem>
-                </ElCol>
-              )
+              return renderFormItem({
+                schema,
+                index,
+                fieldKey,
+                span,
+                content,
+              })
             })}
-            {isSearch && (
-              <ElCol
-                key="__core_form_search_actions"
-                span={baseSpan}
-              >
-                <ElFormItem style={{ width: '100%' }}>
-                  <ElButton
-                    type="primary"
-                    onClick={handleSearch}
-                  >
-                    查询
-                  </ElButton>
-                  <ElButton
-                    class="ml-2"
-                    onClick={handleReset}
-                  >
-                    重置
-                  </ElButton>
-                </ElFormItem>
-              </ElCol>
-            )}
+            {isSearch &&
+              renderSearchActions({
+                span: baseSpan,
+                onSearch: handleSearch,
+                onReset: handleReset,
+              })}
           </ElRow>
         </ElForm>
       )
