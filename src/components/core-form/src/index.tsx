@@ -1,21 +1,13 @@
 import { defineComponent, h, ref } from 'vue'
-import type { PropType, VNodeChild } from 'vue'
-import { ElForm, ElFormItem } from 'element-plus'
+import type { VNodeChild } from 'vue'
+import { ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 import { componentMap } from './component-map'
 import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './type'
+import { coreFormProps } from './props'
 
 const CoreForm = defineComponent({
   name: 'CoreForm',
-  props: {
-    model: {
-      type: Object as PropType<CoreFormProps['model']>,
-      required: true,
-    },
-    schemas: {
-      type: Array as PropType<CoreFormSchema[]>,
-      required: true,
-    },
-  },
+  props: coreFormProps,
   emits: ['register'],
   setup(rawProps, { emit, slots }) {
     // 将运行时 props 断言为 CoreFormProps，辅助类型推断
@@ -68,7 +60,9 @@ const CoreForm = defineComponent({
     emit('register', api)
 
     return () => {
-      const { schemas, ...restFormProps } = props
+      const { schemas, colSpan, ...restFormProps } = props
+      // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
+      const baseSpan = colSpan && colSpan > 0 ? Math.min(colSpan, 24) : 24
 
       return (
         <ElForm
@@ -76,65 +70,73 @@ const CoreForm = defineComponent({
           model={formModel.value}
           {...restFormProps}
         >
-          {schemas.map((schema: CoreFormSchema, index: number) => {
-            const prop = schema.prop
-            let propArray: unknown[] = []
-            if (Array.isArray(prop)) {
-              propArray = prop
-            } else if (prop) {
-              propArray = [prop]
-            }
-            const first = propArray[0]
-            const fieldKey = typeof first === 'string' ? first : ''
-            const Comp = componentMap[schema.component]
-
-            let slotRender: ((ctx: { model: Record<string, unknown> }) => VNodeChild) | undefined
-            if (fieldKey) {
-              slotRender = slots[fieldKey] as
-                | ((ctx: { model: Record<string, unknown> }) => VNodeChild)
-                | undefined
-            }
-
-            let content: VNodeChild | null = null
-
-            if (schema.render) {
-              content = schema.render({ model: formModel.value })
-            } else if (slotRender) {
-              content = slotRender({ model: formModel.value })
-            } else if (Comp && fieldKey && formModel.value) {
-              const recordModel = formModel.value as Record<string, unknown>
-              const propsForComp = {
-                ...(schema?.props || {}),
-                modelValue: recordModel[fieldKey],
-                'onUpdate:modelValue': (val: unknown) => {
-                  recordModel[fieldKey] = val
-                },
+          <ElRow gutter={16}>
+            {schemas.map((schema: CoreFormSchema, index: number) => {
+              const prop = schema.prop
+              let propArray: unknown[] = []
+              if (Array.isArray(prop)) {
+                propArray = prop
+              } else if (prop) {
+                propArray = [prop]
               }
-              content = h(Comp as never, propsForComp as never)
-            }
+              const first = propArray[0]
+              const fieldKey = typeof first === 'string' ? first : ''
+              const Comp = componentMap[schema.component]
 
-            return (
-              <ElFormItem
-                label={schema.label}
-                prop={schema.prop}
-                rules={schema.rules}
-                labelWidth={schema.labelWidth}
-                labelPosition={schema.labelPosition}
-                required={schema.required}
-                error={schema.error}
-                showMessage={schema.showMessage}
-                inlineMessage={schema.inlineMessage}
-                size={schema.size}
-                for={schema.for}
-                validateStatus={
-                  schema.validateStatus === 'warning' ? 'error' : schema.validateStatus
+              let slotRender: ((ctx: { model: Record<string, unknown> }) => VNodeChild) | undefined
+              if (fieldKey) {
+                slotRender = slots[fieldKey] as
+                  | ((ctx: { model: Record<string, unknown> }) => VNodeChild)
+                  | undefined
+              }
+
+              let content: VNodeChild | null = null
+
+              if (schema.render) {
+                content = schema.render({ model: formModel.value })
+              } else if (slotRender) {
+                content = slotRender({ model: formModel.value })
+              } else if (Comp && fieldKey && formModel.value) {
+                const recordModel = formModel.value as Record<string, unknown>
+                const propsForComp = {
+                  ...(schema?.props || {}),
+                  modelValue: recordModel[fieldKey],
+                  'onUpdate:modelValue': (val: unknown) => {
+                    recordModel[fieldKey] = val
+                  },
                 }
-                key={String(schema.prop ?? fieldKey ?? index)}
-              >
-                {content}
-              </ElFormItem>
-            )
-          })}
+                content = h(Comp as never, propsForComp as never)
+              }
+
+              const span = schema.colSpan && schema.colSpan > 0 ? schema.colSpan : baseSpan
+
+              return (
+                <ElCol
+                  key={String(schema.prop ?? fieldKey ?? index)}
+                  span={span}
+                >
+                  <ElFormItem
+                    label={schema.label}
+                    prop={schema.prop}
+                    rules={schema.rules}
+                    labelWidth={schema.labelWidth}
+                    labelPosition={schema.labelPosition}
+                    required={schema.required}
+                    error={schema.error}
+                    showMessage={schema.showMessage}
+                    inlineMessage={schema.inlineMessage}
+                    size={schema.size}
+                    for={schema.for}
+                    validateStatus={
+                      schema.validateStatus === 'warning' ? 'error' : schema.validateStatus
+                    }
+                  >
+                    {content}
+                  </ElFormItem>
+                </ElCol>
+              )
+            })}
+          </ElRow>
         </ElForm>
       )
     }

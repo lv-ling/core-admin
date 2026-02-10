@@ -51,7 +51,7 @@ export function getDeptEditFormSchemas(): CoreFormSchema[] {
     {
       prop: 'status',
       label: '状态(多选)',
-      component: 'ElCheckboxGroup',
+      component: 'ElRadioGroup',
       props: {
         options: [
           { label: '启用', value: 'enabled' },

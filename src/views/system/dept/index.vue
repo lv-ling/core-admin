@@ -111,7 +111,7 @@ const {
     <ElDialog
       v-model="dialogVisible"
       :title="dialogTitle"
-      width="500px"
+      width="80%"
       destroy-on-close
       @close="handleDialogClose"
     >
@@ -119,6 +119,7 @@ const {
         :model="editForm"
         :schemas="getDeptEditFormSchemas()"
         label-width="90px"
+        :col-span="8"
       >
         <template #parentId="{ model }">
           <ElFormItem

@@ -34,6 +34,8 @@ export interface CoreFormSchema {
   for?: string
   /** 校验状态，对应 validate-status */
   validateStatus?: 'success' | 'warning' | 'error' | 'validating'
+  /** 栅格列宽（1-24，默认 24，对应一行一个） */
+  colSpan?: number
 }
 
 export interface CoreFormExpose {
@@ -49,4 +51,6 @@ export interface CoreFormExpose {
 
 export type CoreFormProps = FormProps & {
   schemas: CoreFormSchema[]
+  /** 一行展示多少列（自动换算为 24 栅格），优先级低于 schema.colSpan */
+  colSpan?: number
 }
