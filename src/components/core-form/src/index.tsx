@@ -1,4 +1,4 @@
-import { defineComponent, h, ref, watch } from 'vue'
+import { defineComponent, h, ref } from 'vue'
 import type { VNodeChild } from 'vue'
 import { ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 import { componentMap } from './component-map'
@@ -12,8 +12,8 @@ const CoreForm = defineComponent({
   setup(rawProps, { emit, slots }) {
     // 将运行时 props 断言为 CoreFormProps，辅助类型推断
     const props = rawProps as Readonly<CoreFormProps>
-    // 使用 ref 包裹外部传入的 model，初始值来自 props.model
-    const formModel = ref<Record<string, unknown>>(props.model ?? {})
+    // 内部表单值，默认空对象；不再直接依赖外部 model 引用
+    const formModel = ref<Record<string, unknown>>({})
     // 内部维护一份可变的 schemas，支持通过暴露的 API 动态更新
     const innerSchemas = ref<CoreFormSchema[]>(props.schemas ?? [])
 
@@ -64,6 +64,13 @@ const CoreForm = defineComponent({
         if (!formModel.value) return
         Object.assign(formModel.value, initModel)
       },
+      getValues() {
+        return { ...formModel.value }
+      },
+      setValues(values) {
+        if (!values) return
+        Object.assign(formModel.value, values)
+      },
     }
 
     emit('register', api)
@@ -106,9 +113,15 @@ const CoreForm = defineComponent({
               } else if (slotRender) {
                 content = slotRender({ model: formModel.value })
               } else if (Comp && fieldKey && formModel.value) {
-                const recordModel = formModel.value as Record<string, unknown>
+                const recordModel = formModel.value
+                const baseProps = schema?.props || {}
                 const propsForComp = {
-                  ...(schema?.props || {}),
+                  ...baseProps,
+                  // 默认让表单控件宽度撑满所在的 ElCol，用户样式优先级更高
+                  style: {
+                    width: '100%',
+                    ...(baseProps.style as Record<string, unknown> | undefined),
+                  },
                   modelValue: recordModel[fieldKey],
                   'onUpdate:modelValue': (val: unknown) => {
                     recordModel[fieldKey] = val
@@ -125,6 +138,7 @@ const CoreForm = defineComponent({
                   span={span}
                 >
                   <ElFormItem
+                    style={{ width: '100%' }}
                     label={schema.label}
                     prop={schema.prop}
                     rules={schema.rules}

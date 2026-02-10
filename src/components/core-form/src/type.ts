@@ -57,10 +57,16 @@ export interface CoreFormExpose {
   getField: (prop: FormItemProp) => FormItemContext | undefined
   /** 设置初始值（会 merge 进当前 model） */
   setInitialValues: (initModel: Record<string, unknown>) => void
+  /** 获取当前表单值（浅拷贝） */
+  getValues: () => Record<string, unknown>
+  /** 设置表单值（会 merge 到当前 model） */
+  setValues: (values: Record<string, unknown>) => void
 }
 
-export type CoreFormProps = FormProps & {
+export type CoreFormProps = Omit<FormProps, 'model'> & {
+  /** 表单项配置列表 */
   schemas: CoreFormSchema[]
+  /** 行间距（左右 gutter，单位 px） */
   gutter?: number
   /** 一行展示多少列（自动换算为 24 栅格），优先级低于 schema.colSpan */
   colSpan?: number

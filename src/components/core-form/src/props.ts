@@ -2,11 +2,6 @@ import type { PropType } from 'vue'
 import type { CoreFormSchema, CoreFormProps } from './type'
 
 export const coreFormProps = {
-  /** 表单模型，必须为对象 */
-  model: {
-    type: Object as PropType<CoreFormProps['model']>,
-    default: () => ({}),
-  },
   /** 表单项配置列表 */
   schemas: {
     type: Array as PropType<CoreFormSchema[]>,

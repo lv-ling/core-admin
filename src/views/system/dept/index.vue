@@ -5,7 +5,6 @@ import { getDeptSearchFormSchemas, getDeptEditFormSchemas } from './form-items'
 
 const {
   loading,
-  searchForm,
   dialogVisible,
   dialogTitle,
   deptColumns,
@@ -24,6 +23,8 @@ const {
   handleSaveAll,
   handleDialogClose,
 } = useDeptPage()
+
+const [registerSearchForm] = useCoreForm(getDeptSearchFormSchemas())
 
 const [registerCoreForm] = useCoreForm(getDeptEditFormSchemas())
 </script>
@@ -63,11 +64,7 @@ const [registerCoreForm] = useCoreForm(getDeptEditFormSchemas())
           </div>
         </template>
         <template #form>
-          <CoreForm
-            :model="searchForm"
-            :schemas="getDeptSearchFormSchemas()"
-            inline
-          >
+          <CoreForm @register="registerSearchForm">
             <template #operation>
               <ElButton
                 type="primary"
