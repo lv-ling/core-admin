@@ -67,11 +67,18 @@ const CoreForm = defineComponent({
 
     emit('register', api)
 
+    const showAll = ref(false)
+
     return () => {
       const currentProps = innerProps.value
-      const { colSpan, gutter, isSearch, onSearch, onReset, ...restFormProps } = currentProps
+      const { colSpan, gutter, isSearch, maxRows, onSearch, onReset, ...restFormProps } = currentProps
       // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
       const baseSpan = calcBaseSpan(colSpan)
+      const itemsPerRow = Math.max(1, Math.floor(24 / baseSpan) || 1)
+      const rowLimit = maxRows === false ? Infinity : maxRows ?? 2
+      // 总允许渲染的「单元格」数量（包含查询/重置那一格）
+      const cellLimit = rowLimit === Infinity ? Infinity : itemsPerRow * rowLimit
+
       const handleSearch = () => {
         const snapshot = { ...formModel.value }
         onSearch?.(snapshot)
@@ -83,14 +90,19 @@ const CoreForm = defineComponent({
         emit('reset')
       }
 
+      // 如果需要限制行数，并且是搜索表单，则需要为查询/重置按钮预留 1 个「单元格」位置
+      const schemaCellLimit =
+        cellLimit === Infinity || !isSearch ? cellLimit : Math.max(0, cellLimit - 1)
+
+      const visibleSchemas =
+        showAll.value || rowLimit === Infinity
+          ? innerSchemas.value
+          : innerSchemas.value.slice(0, schemaCellLimit)
+
       return (
-        <ElForm
-          ref={formRef}
-          model={formModel.value}
-          {...restFormProps}
-        >
+        <ElForm ref={formRef} model={formModel.value} {...restFormProps}>
           <ElRow gutter={gutter}>
-            {innerSchemas.value.map((schema: CoreFormSchema, index: number) => {
+            {visibleSchemas.map((schema: CoreFormSchema, index: number) => {
               const { content, fieldKey } = renderField({
                 schema,
                 index,
@@ -112,6 +124,12 @@ const CoreForm = defineComponent({
                 span: baseSpan,
                 onSearch: handleSearch,
                 onReset: handleReset,
+                showToggle:
+                  rowLimit !== Infinity && innerSchemas.value.length + 1 > cellLimit,
+                expanded: showAll.value,
+                onToggle: () => {
+                  showAll.value = !showAll.value
+                },
               })}
           </ElRow>
         </ElForm>

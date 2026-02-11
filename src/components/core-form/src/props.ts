@@ -26,6 +26,15 @@ export const coreFormProps = {
     type: Number as PropType<number>,
     default: 16,
   },
+  /**
+   * 搜索表单默认最多展示的行数
+   * - 默认为 2 行
+   * - 设为 false 时表示展开全部，不显示「更多」按钮
+   */
+  maxRows: {
+    type: [Number, Boolean] as PropType<CoreFormProps['maxRows']>,
+    default: 2,
+  },
   /** 标签宽度，默认 90px，等价于 ElForm 的 label-width */
   labelWidth: {
     type: [String, Number] as PropType<CoreFormProps['labelWidth']>,

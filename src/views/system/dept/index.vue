@@ -29,6 +29,7 @@ const [registerSearchForm] = useCoreForm({
   schemas: getDeptSearchFormSchemas(),
   inline: true,
   isSearch: true,
+  maxRows: 2,
   onSearch: (model) => handleSearch(model),
   onReset: () => handleReset(),
 })

@@ -74,6 +74,12 @@ export type CoreFormProps = Omit<FormProps, 'model'> & {
   colSpan?: number
   /** 是否为搜索表单，自动追加「查询 / 重置」按钮 */
   isSearch?: boolean
+  /**
+   * 搜索表单默认最多展示的行数
+   * - 默认为 2 行
+   * - 设为 false 时表示展开全部，不显示「更多」按钮
+   */
+  maxRows?: number | false
   /** 搜索按钮点击回调（仅 isSearch 为 true 时生效） */
   onSearch?: (model: Record<string, unknown>) => void
   /** 重置按钮点击回调（仅 isSearch 为 true 时生效） */

@@ -164,5 +164,51 @@ export function getDeptSearchFormSchemas(): CoreFormSchema[] {
         ],
       },
     },
+    {
+      prop: 'leader',
+      label: '负责人',
+      component: 'ElInput',
+      props: {
+        placeholder: '请输入负责人',
+        clearable: true,
+      },
+    },
+    {
+      prop: 'phone',
+      label: '电话',
+      component: 'ElInput',
+      props: {
+        placeholder: '请输入联系电话',
+        clearable: true,
+      },
+    },
+    {
+      prop: 'email',
+      label: '邮箱',
+      component: 'ElInput',
+      props: {
+        placeholder: '请输入邮箱',
+        clearable: true,
+      },
+    },
+    {
+      prop: 'sortOrder',
+      label: '排序',
+      component: 'ElInputNumber',
+      props: {
+        min: 0,
+        placeholder: '请输入排序',
+        class: 'w-full',
+      },
+    },
+    {
+      prop: 'enableNotify',
+      label: '通知开关',
+      component: 'ElSwitch',
+      props: {
+        activeText: '开启',
+        inactiveText: '关闭',
+      },
+    },
   ]
 }
