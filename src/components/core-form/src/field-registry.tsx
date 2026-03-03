@@ -21,6 +21,7 @@ import {
   ElTimeSelect,
   ElUpload,
 } from 'element-plus'
+import ApiSelect from '@/components/api-select/index.vue'
 
 export interface CoreFormOption {
   label: string
@@ -93,6 +94,10 @@ const builtinFieldRegistry = {
           disabled={option.disabled}
         />
       )),
+  },
+  'api-select': {
+    component: ApiSelect,
+    mapProps: defaultMapProps,
   },
   switch: {
     component: ElSwitch,
@@ -193,6 +198,7 @@ export const legacyComponentTypeMap = {
   ElInput: 'input',
   ElInputNumber: 'input-number',
   ElSelect: 'select',
+  ApiSelect: 'api-select',
   ElSwitch: 'switch',
   ElCheckboxGroup: 'checkbox-group',
   ElRadioGroup: 'radio-group',
