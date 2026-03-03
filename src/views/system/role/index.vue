@@ -2,9 +2,10 @@
 import { ref, computed } from 'vue'
 import type { HotTable } from '@handsontable/vue3'
 import { ElMessage } from 'element-plus'
-import { PageWrap } from '@/components'
+import { CoreForm, PageWrap, useCoreForm } from '@/components'
 import { RoleHeader } from './components'
 import { COL_HEADERS, getColumns } from './columns'
+import { getRoleSearchFormSchemas } from './form-items'
 import type { IRoleSearchForm } from './form-items'
 import type { IRole } from './types'
 import { getRowValidationErrors } from './utils'
@@ -37,10 +38,13 @@ const roles = ref<IRole[]>([
   },
 ])
 
-const searchForm = ref<IRoleSearchForm>({
-  roleCode: '',
-  roleName: '',
-  status: '',
+const [registerSearchForm] = useCoreForm({
+  schemas: getRoleSearchFormSchemas(),
+  inline: true,
+  isSearch: true,
+  maxRows: 1,
+  onSearch: (model) => handleSearch(model),
+  onReset: () => handleReset(),
 })
 
 const hotSettings = computed(() => ({
@@ -132,8 +136,21 @@ function handleSave() {
   ElMessage.success('保存成功')
 }
 
-function handleSearch() {
-  const { roleCode, roleName, status } = searchForm.value
+function normalizeSearchForm(model: Record<string, unknown>): IRoleSearchForm {
+  const roleCode = typeof model.roleCode === 'string' ? model.roleCode : ''
+  const roleName = typeof model.roleName === 'string' ? model.roleName : ''
+  const statusValue = model.status
+  const status: IRoleSearchForm['status'] =
+    statusValue === 'enabled' || statusValue === 'disabled' ? statusValue : ''
+  return {
+    roleCode,
+    roleName,
+    status,
+  }
+}
+
+function handleSearch(model: Record<string, unknown>) {
+  const { roleCode, roleName, status } = normalizeSearchForm(model)
   let filtered = roles.value
   if (roleCode?.trim()) {
     filtered = filtered.filter((r) => r.roleCode.toLowerCase().includes(roleCode.toLowerCase()))
@@ -151,7 +168,6 @@ function handleSearch() {
 }
 
 function handleReset() {
-  searchForm.value = { roleCode: '', roleName: '', status: '' }
   const hot = hotTableRef.value?.hotInstance
   if (hot) {
     hot.loadData(roles.value)
@@ -168,53 +184,10 @@ function handleReset() {
         :on-save="handleSave"
       />
     </template>
-    <ElForm
-      :model="searchForm"
-      class="mb-4 flex flex-wrap items-end gap-4"
-    >
-      <ElFormItem label="角色编码">
-        <ElInput
-          v-model="searchForm.roleCode"
-          placeholder="请输入角色编码"
-          clearable
-          class="w-40"
-        />
-      </ElFormItem>
-      <ElFormItem label="角色名称">
-        <ElInput
-          v-model="searchForm.roleName"
-          placeholder="请输入角色名称"
-          clearable
-          class="w-40"
-        />
-      </ElFormItem>
-      <ElFormItem label="状态">
-        <ElSelect
-          v-model="searchForm.status"
-          placeholder="全部"
-          clearable
-          class="w-40"
-        >
-          <ElOption
-            label="启用"
-            value="enabled"
-          />
-          <ElOption
-            label="禁用"
-            value="disabled"
-          />
-        </ElSelect>
-      </ElFormItem>
-      <ElFormItem>
-        <ElButton
-          type="primary"
-          @click="handleSearch"
-        >
-          搜索
-        </ElButton>
-        <ElButton @click="handleReset">重置</ElButton>
-      </ElFormItem>
-    </ElForm>
+    <CoreForm
+      class="mb-4"
+      @register="registerSearchForm"
+    />
     <HotTable
       ref="hotTableRef"
       :settings="hotSettings"
