@@ -1,14 +1,19 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { ElForm, ElRow } from 'element-plus'
 import type { CoreFormSchema, CoreFormExpose, CoreFormProps } from './types'
 import { coreFormProps } from './props'
 import { useFormModel } from './hooks/useFormModel'
 import { useSchemas } from './hooks/useSchemas'
 import { useFormProps } from './hooks/useFormProps'
-import { calcBaseSpan } from './utils/layout'
+import {
+  calcBaseSpan,
+  calcSearchVisibleSchemasBySpan,
+} from './utils/layout'
 import { renderField } from './renderers/renderField'
 import { renderFormItem } from './renderers/renderFormItem'
 import { renderSearchActions } from './renderers/renderSearchActions'
+import { cloneDefaultValue, isSchemaVisible } from './utils/schema.helpers'
+import { getValueByPath, setValueByPath } from './utils/schema'
 
 const CoreForm = defineComponent({
   name: 'CoreForm',
@@ -65,6 +70,39 @@ const CoreForm = defineComponent({
       setProps,
     }
 
+    watch(
+      () => props.schemas,
+      (nextSchemas) => {
+        updateSchema(nextSchemas ?? [])
+      },
+      { deep: true }
+    )
+
+    watch(
+      () => props,
+      (nextProps) => {
+        setProps(nextProps as Partial<CoreFormProps>)
+      },
+      { deep: true }
+    )
+
+    function applyDefaultValues(schemas: CoreFormSchema[]) {
+      for (const schema of schemas) {
+        if (schema.defaultValue === undefined) continue
+        const currentValue = getValueByPath(formModel.value, schema.prop)
+        if (currentValue !== undefined) continue
+        setValueByPath(formModel.value, schema.prop, cloneDefaultValue(schema.defaultValue))
+      }
+    }
+
+    watch(
+      () => innerSchemas.value,
+      (schemas) => {
+        applyDefaultValues(schemas)
+      },
+      { immediate: true, deep: true }
+    )
+
     emit('register', api)
 
     const showAll = ref(false)
@@ -74,10 +112,7 @@ const CoreForm = defineComponent({
       const { colSpan, gutter, isSearch, maxRows, onSearch, onReset, ...restFormProps } = currentProps
       // 默认使用 24 栅格，每项占用的 span 由 colSpan 决定，例如：colSpan=8 → 一行 3 个
       const baseSpan = calcBaseSpan(colSpan)
-      const itemsPerRow = Math.max(1, Math.floor(24 / baseSpan) || 1)
-      const rowLimit = maxRows === false ? Infinity : maxRows ?? 2
-      // 总允许渲染的「单元格」数量（包含查询/重置那一格）
-      const cellLimit = rowLimit === Infinity ? Infinity : itemsPerRow * rowLimit
+      const rowLimit = isSearch ? (maxRows === false ? Infinity : maxRows ?? 2) : Infinity
 
       const handleSearch = () => {
         const snapshot = { ...formModel.value }
@@ -87,17 +122,20 @@ const CoreForm = defineComponent({
       const handleReset = () => {
         onReset?.()
         formRef.value?.resetFields()
+        applyDefaultValues(innerSchemas.value)
         emit('reset')
       }
 
-      // 如果需要限制行数，并且是搜索表单，则需要为查询/重置按钮预留 1 个「单元格」位置
-      const schemaCellLimit =
-        cellLimit === Infinity || !isSearch ? cellLimit : Math.max(0, cellLimit - 1)
+      const allVisibleSchemas = innerSchemas.value.filter((schema) =>
+        isSchemaVisible(schema, formModel.value)
+      )
 
-      const visibleSchemas =
-        showAll.value || rowLimit === Infinity
-          ? innerSchemas.value
-          : innerSchemas.value.slice(0, schemaCellLimit)
+      const searchLayoutResult =
+        isSearch && rowLimit !== Infinity
+          ? calcSearchVisibleSchemasBySpan(allVisibleSchemas, baseSpan, rowLimit, showAll.value)
+          : { visibleSchemas: allVisibleSchemas, showToggle: false }
+
+      const visibleSchemas = searchLayoutResult.visibleSchemas
 
       return (
         <ElForm ref={formRef} model={formModel.value} {...restFormProps}>
@@ -124,8 +162,7 @@ const CoreForm = defineComponent({
                 span: baseSpan,
                 onSearch: handleSearch,
                 onReset: handleReset,
-                showToggle:
-                  rowLimit !== Infinity && innerSchemas.value.length + 1 > cellLimit,
+                showToggle: searchLayoutResult.showToggle,
                 expanded: showAll.value,
                 onToggle: () => {
                   showAll.value = !showAll.value

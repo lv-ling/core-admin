@@ -2,6 +2,7 @@
 export { default as CoreForm } from './src/coreForm'
 
 export * from './src/useCoreForm'
+export * from './src/field-registry'
 
 // 类型导出（给业务侧做类型标注）
 export * from './src/types'

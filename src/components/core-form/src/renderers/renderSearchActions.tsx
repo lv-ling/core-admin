@@ -29,6 +29,7 @@ export function renderSearchActions({
     <ElCol
       key="__core_form_search_actions"
       span={span}
+      style={{ marginLeft: 'auto' }}
     >
       <ElFormItem style={{ width: '100%' }}>
         <div class="w-full flex items-center justify-end gap-2">

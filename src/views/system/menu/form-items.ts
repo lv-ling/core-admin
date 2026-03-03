@@ -6,7 +6,7 @@ export function getMenuSearchFormSchemas(): CoreFormSchema[] {
     {
       prop: 'keyword',
       label: '关键字',
-      component: 'ElInput',
+      type: 'input',
       props: {
         placeholder: '菜单名称 / 路由路径',
         clearable: true,
@@ -15,7 +15,7 @@ export function getMenuSearchFormSchemas(): CoreFormSchema[] {
     {
       prop: 'type',
       label: '类型',
-      component: 'ElSelect',
+      type: 'select',
       props: {
         placeholder: '全部',
         clearable: true,
@@ -29,7 +29,7 @@ export function getMenuSearchFormSchemas(): CoreFormSchema[] {
     {
       prop: 'status',
       label: '状态',
-      component: 'ElSelect',
+      type: 'select',
       props: {
         placeholder: '全部',
         clearable: true,
@@ -41,4 +41,3 @@ export function getMenuSearchFormSchemas(): CoreFormSchema[] {
     },
   ]
 }
-

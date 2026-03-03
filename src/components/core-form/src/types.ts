@@ -1,21 +1,41 @@
 import type { VNodeChild, Ref } from 'vue'
 import type { FormProps, FormItemRule, FormItemContext, FormItemProp } from 'element-plus'
-import { componentMap } from './component-map'
 import type { Arrayable } from 'element-plus/es/utils/typescript.mjs'
+import type { CoreFormFieldType, LegacyCoreFormComponent } from './field-registry'
+
+export interface CoreFormSchemaContext {
+  model: Record<string, unknown>
+  schema: CoreFormSchema
+}
 
 export interface CoreFormSchema {
   /** 对应表单 model 的字段名 */
   prop: FormItemProp
   /** 表单项标签文案 */
   label: string
-  /** 使用的组件名，对应 componentMap 的 key */
-  component: keyof typeof componentMap
+  /**
+   * 字段类型（推荐）
+   * - 内置类型见 field-registry.tsx
+   * - 也可通过 registerCoreFormField 注册自定义类型
+   */
+  type?: CoreFormFieldType
+  /**
+   * 旧版组件名写法（兼容保留）
+   * - 新代码建议使用 type
+   */
+  component?: LegacyCoreFormComponent
   /** 传递给渲染组件的所有 props / 事件 */
   props?: Record<string, unknown>
   /** ElFormItem 校验规则 */
   rules?: FormItemRule[]
   /** 自定义渲染（优先级最高） */
-  render?: (ctx: { model: Record<string, unknown> }) => VNodeChild
+  render?: (ctx: CoreFormSchemaContext) => VNodeChild
+  /** 默认值（仅在当前字段值为 undefined 时写入） */
+  defaultValue?: unknown
+  /** 是否显示（默认 true） */
+  visible?: boolean | ((ctx: CoreFormSchemaContext) => boolean)
+  /** 是否禁用（优先级高于 props.disabled） */
+  disabled?: boolean | ((ctx: CoreFormSchemaContext) => boolean)
   /** 表单项标签位置，对应 label-position */
   labelPosition?: 'left' | 'right' | 'top'
   /** 标签宽度，对应 label-width */
@@ -106,8 +126,8 @@ export interface CoreFormMethods {
   validate: () => Promise<boolean>
   validateField: (field: string) => Promise<boolean>
   resetFields: () => void
-  clearValidate: (props?: string | string[]) => void
-  scrollToField: (prop: string) => void
+  clearValidate: (props?: Arrayable<FormItemProp> | undefined) => void
+  scrollToField: (prop: FormItemProp) => void
   /** 更新 Core Form / ElForm 的 props（除 schemas 外） */
   setProps: (props: Partial<CoreFormProps>) => void
   /** 直接访问内部的 ElFormItem 列表 */

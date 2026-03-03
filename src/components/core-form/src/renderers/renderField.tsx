@@ -1,8 +1,14 @@
 import { h } from 'vue'
 import type { Slots, VNodeChild } from 'vue'
-import { componentMap } from '../component-map'
+import { createFieldAdapterContext, resolveCoreFormFieldBySchema } from '../field-registry'
 import type { CoreFormSchema } from '../types'
-import { getFieldKeyFromSchema } from '../utils/schema'
+import { resolveSchemaDisabled } from '../utils/schema.helpers'
+import {
+  getFieldKeyFromSchema,
+  getValueByPath,
+  normalizePropToArray,
+  setValueByPath,
+} from '../utils/schema'
 
 interface RenderFieldParams {
   schema: CoreFormSchema
@@ -21,39 +27,48 @@ export function renderField({
   formModel,
 }: RenderFieldParams): { content: VNodeChild | null; fieldKey: string } {
   const fieldKey = getFieldKeyFromSchema(schema)
-  const Comp = componentMap[schema.component]
+  const fieldPath = normalizePropToArray(schema.prop)
+  const adapter = resolveCoreFormFieldBySchema(schema.type, schema.component)
 
-  let slotRender: ((ctx: { model: Record<string, unknown> }) => VNodeChild) | undefined
+  let slotRender:
+    | ((ctx: { model: Record<string, unknown>; schema: CoreFormSchema }) => VNodeChild)
+    | undefined
   if (fieldKey) {
     slotRender = slots[fieldKey] as
-      | ((ctx: { model: Record<string, unknown> }) => VNodeChild)
+      | ((ctx: { model: Record<string, unknown>; schema: CoreFormSchema }) => VNodeChild)
       | undefined
   }
 
   let content: VNodeChild | null = null
 
   if (schema.render) {
-    content = schema.render({ model: formModel })
+    content = schema.render({ model: formModel, schema })
   } else if (slotRender) {
-    content = slotRender({ model: formModel })
-  } else if (Comp && fieldKey) {
-    const recordModel = formModel
-    const baseProps = schema?.props || {}
-    const propsForComp = {
-      ...baseProps,
+    content = slotRender({ model: formModel, schema })
+  } else if (adapter) {
+    const adapterContext = createFieldAdapterContext(schema.props)
+    const adapterProps = adapter.mapProps?.(adapterContext) ?? adapterContext.schemaProps
+    const schemaDisabled = resolveSchemaDisabled(schema, formModel)
+    const propsForComp: Record<string, unknown> = {
+      ...adapterProps,
       // 默认让表单控件宽度撑满所在的 ElCol，用户样式优先级更高
-      style: {
-        width: '100%',
-        ...(baseProps.style as Record<string, unknown> | undefined),
-      },
-      modelValue: recordModel[fieldKey],
-      'onUpdate:modelValue': (val: unknown) => {
-        recordModel[fieldKey] = val
-      },
+      style: [{ width: '100%' }, adapterProps.style],
     }
-    content = h(Comp as never, propsForComp as never)
+
+    if (fieldPath.length > 0) {
+      propsForComp.modelValue = getValueByPath(formModel, schema.prop)
+      propsForComp['onUpdate:modelValue'] = (val: unknown) => {
+        setValueByPath(formModel, schema.prop, val)
+      }
+    }
+
+    if (schemaDisabled !== undefined) {
+      propsForComp.disabled = schemaDisabled
+    }
+
+    const children = adapter.renderChildren?.(adapterContext)
+    content = h(adapter.component as never, propsForComp as never, children as never)
   }
 
   return { content, fieldKey }
 }
-

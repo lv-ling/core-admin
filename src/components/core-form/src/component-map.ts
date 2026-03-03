@@ -1,39 +1,25 @@
+import type { Component } from 'vue'
 import {
-  ElInput,
-  ElInputNumber,
-  ElAutocomplete,
-  ElSelect,
-  ElSwitch,
-  ElCheckboxGroup,
-  ElRadioGroup,
-  ElColorPicker,
-  ElDatePicker,
-  ElTimePicker,
-  ElTimeSelect,
-  ElUpload,
-  ElSlider,
-  ElRate,
-  ElProgress,
-  ElSkeleton,
-  ElSkeletonItem,
-} from 'element-plus'
+  legacyComponentTypeMap,
+  resolveCoreFormField,
+  type LegacyCoreFormComponent,
+} from './field-registry'
 
-export const componentMap = {
-  ElInput: ElInput,
-  ElSelect: ElSelect,
-  ElCheckboxGroup: ElCheckboxGroup,
-  ElInputNumber: ElInputNumber,
-  ElSwitch: ElSwitch,
-  ElRadioGroup: ElRadioGroup,
-  ElAutocomplete: ElAutocomplete,
-  ElColorPicker: ElColorPicker,
-  ElDatePicker: ElDatePicker,
-  ElTimePicker: ElTimePicker,
-  ElTimeSelect: ElTimeSelect,
-  ElUpload: ElUpload,
-  ElSlider: ElSlider,
-  ElRate: ElRate,
-  ElProgress: ElProgress,
-  ElSkeleton: ElSkeleton,
-  ElSkeletonItem: ElSkeletonItem,
-}
+/**
+ * 向后兼容旧版 schema.component 写法。
+ * 新代码请优先使用 schema.type + 字段注册器。
+ */
+const entries = Object.entries(legacyComponentTypeMap).map(([component, type]) => {
+  const resolved = resolveCoreFormField(type)
+  const adapterComponent = resolved?.component
+  return [component, adapterComponent] as const
+})
+
+export const componentMap = entries.reduce<Record<LegacyCoreFormComponent, Component>>(
+  (acc, [component, adapterComponent]) => {
+    if (!adapterComponent) return acc
+    acc[component as LegacyCoreFormComponent] = adapterComponent
+    return acc
+  },
+  {} as Record<LegacyCoreFormComponent, Component>
+)

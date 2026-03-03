@@ -47,11 +47,11 @@ export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
     formApiRef.value?.resetFields()
   }
 
-  function clearValidate(props?: string | string[]) {
+  const clearValidate: CoreFormExpose['clearValidate'] = (props) => {
     formApiRef.value?.clearValidate(props)
   }
 
-  function scrollToField(prop: string) {
+  const scrollToField: CoreFormExpose['scrollToField'] = (prop) => {
     formApiRef.value?.scrollToField(prop)
   }
 
@@ -76,7 +76,14 @@ export function useCoreForm(initialOptions: UseCoreFormOptions = {}) {
   }
 
   const setProps: CoreFormExpose['setProps'] = (props) => {
-    formApiRef.value?.setProps(props)
+    if (!props) return
+    const rest = { ...props }
+    delete (rest as Partial<CoreFormProps>).schemas
+    formProps.value = {
+      ...formProps.value,
+      ...(rest as Partial<UseCoreFormOptions>),
+    }
+    formApiRef.value?.setProps(rest)
   }
 
   const methods: CoreFormMethods = {
