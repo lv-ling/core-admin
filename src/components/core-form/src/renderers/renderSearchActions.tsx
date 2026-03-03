@@ -36,6 +36,8 @@ export function renderSearchActions({
             <button
               type="button"
               class="cursor-pointer text-primary flex items-center border-none bg-transparent p-0"
+              aria-label={expanded ? '收起筛选项' : '展开筛选项'}
+              title={expanded ? '收起筛选项' : '展开筛选项'}
               onClick={onToggle}
             >
               <ElIcon>

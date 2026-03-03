@@ -11,8 +11,7 @@ function goToTag(fullPath: string) {
   router.push(fullPath)
 }
 
-function closeTag(fullPath: string, e: Event) {
-  e.stopPropagation()
+function closeTag(fullPath: string) {
   layoutStore.removeView(fullPath)
   if (route.fullPath === fullPath) {
     const list = layoutStore.visitedViews
@@ -32,15 +31,23 @@ function closeTag(fullPath: string, e: Event) {
           :key="view.fullPath"
           class="tag-nav-item"
           :class="{ active: view.fullPath === route.fullPath }"
-          @click="goToTag(view.fullPath)"
         >
-          <span class="tag-nav-title">{{ view.meta?.title ?? view.fullPath }}</span>
-          <span
+          <button
+            type="button"
+            class="tag-nav-link"
+            :aria-current="view.fullPath === route.fullPath ? 'page' : undefined"
+            @click="goToTag(view.fullPath)"
+          >
+            <span class="tag-nav-title">{{ view.meta?.title ?? view.fullPath }}</span>
+          </button>
+          <button
+            type="button"
             class="tag-nav-close"
-            @click="closeTag(view.fullPath, $event)"
+            :aria-label="`关闭标签 ${view.meta?.title ?? view.fullPath}`"
+            @click="closeTag(view.fullPath)"
           >
             ×
-          </span>
+          </button>
         </div>
       </div>
     </ElScrollbar>
@@ -71,12 +78,20 @@ function closeTag(fullPath: string, e: Event) {
   padding: 4px 12px;
   border-radius: 4px;
   font-size: 12px;
-  cursor: pointer;
   border: 1px solid var(--layout-tag-border);
   background: var(--layout-tag-item-bg);
 }
 .tag-nav-item:hover {
   color: var(--el-color-primary);
+}
+.tag-nav-link {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 .tag-nav-item.active {
   color: var(--el-color-primary);
@@ -86,6 +101,18 @@ function closeTag(fullPath: string, e: Event) {
 .tag-nav-close {
   font-size: 12px;
   margin-left: 2px;
+  padding: 0;
+  margin: 0 0 0 2px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.tag-nav-link:focus-visible,
+.tag-nav-close:focus-visible {
+  outline: 2px solid var(--el-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 .tag-nav-close:hover {
   color: var(--el-color-danger);

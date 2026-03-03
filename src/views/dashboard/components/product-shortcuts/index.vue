@@ -25,11 +25,11 @@ const shortcuts: ShortcutItem[] = [
       <span>云效产品</span>
     </template>
     <div class="flex flex-wrap gap-6">
-      <a
+      <button
         v-for="(item, i) in shortcuts"
         :key="i"
-        class="flex min-w-20 flex-col items-center gap-2 text-[var(--el-color-primary)] no-underline hover:opacity-80"
-        href="javascript:;"
+        type="button"
+        class="product-shortcuts__item flex min-w-20 flex-col items-center gap-2 text-[var(--el-color-primary)] hover:opacity-80"
       >
         <span
           class="product-shortcuts__icon flex h-12 w-12 items-center justify-center rounded-lg text-xl font-semibold"
@@ -37,12 +37,24 @@ const shortcuts: ShortcutItem[] = [
           {{ item.icon }}
         </span>
         <span class="text-xs">{{ item.label }}</span>
-      </a>
+      </button>
     </div>
   </ElCard>
 </template>
 
 <style scoped>
+.product-shortcuts__item {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.product-shortcuts__item:focus-visible {
+  outline: 2px solid var(--el-color-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 /* color-mix 原子类无法表达 */
 .product-shortcuts__icon {
   background: color-mix(in srgb, var(--el-color-primary) 15%, transparent);

@@ -34,8 +34,10 @@
 
   .page-container {
     flex: 1;
+    min-height: 0;
     width: 100%;
     padding: 12px;
+    overflow-x: hidden;
   }
 }
 </style>

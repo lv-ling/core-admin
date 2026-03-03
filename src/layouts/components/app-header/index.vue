@@ -8,6 +8,10 @@ import HeaderUserMenu from '@/layouts/components/header-user-menu/index.vue'
 const route = useRoute()
 const layoutStore = useLayoutStore()
 
+const sidebarToggleLabel = computed(() =>
+  layoutStore.sidebarCollapsed ? '展开侧边栏' : '收起侧边栏'
+)
+
 const breadcrumbItems = computed(() => {
   const withTitle = route.matched.filter((r) => r.meta?.title)
   return withTitle.map((r) => {
@@ -35,6 +39,9 @@ const breadcrumbItems = computed(() => {
       <ElButton
         link
         class="app-header-collapse-btn"
+        :aria-label="sidebarToggleLabel"
+        aria-controls="app-sidebar-menu"
+        :aria-expanded="!layoutStore.sidebarCollapsed"
         @click="layoutStore.toggleSidebar()"
       >
         <ElIcon :size="20">

@@ -24,6 +24,7 @@ const asideWidth = computed(() => (layoutStore.sidebarCollapsed ? '64px' : '200p
 
 <template>
   <ElAside
+    id="app-sidebar-menu"
     :width="asideWidth"
     class="sidebar-menu-aside"
     :class="{ 'is-collapsed': layoutStore.sidebarCollapsed }"
